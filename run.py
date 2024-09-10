@@ -1,5 +1,7 @@
 welcome_message = "CheckAloan"
 
+database = {}
+
 def applicant_details():
     """
    Getting the details from the applicant
@@ -32,7 +34,7 @@ class Applicant:
         """
         Summary of the provided details
         """
-        return (f"Hello {self.name}!"
+        return (f"Hello {self.name}!\n"
         f"Please check if the details below are correct:\n"
         f"Email: {self.email}\n"
         f"Phone number: {self.phone}\n"
@@ -48,6 +50,16 @@ class Applicant:
         """
         answer = input("To make any changes on the details above enter c and press enter,else enter s and press enter: ")
         return answer
+    
+    def decision():
+        
+    
+    def add_to_database(email,status):
+        """
+        Add the applicants email to database as key and the applications status as value
+        """
+        database.update(self.email,decision)
+        return database
 
 def applicant_details():
     """
@@ -65,12 +77,11 @@ def applicant_details():
 
 
 
-#test = Applicant('tamas','gavlider','2312@321.com',1234567890,35,'married',2,2500,1850)
-#test.summary()
-#a = test.make_changes()
-#if( a[-1] == "c"):
-#    print("Change details")
-#else: 
-#    print("Continue")
+
+test = Applicant('tamas gavlider','2312@321.com',1234567890,35,'married',2,2500,1850)
+test.summary()
+add_to_database(test.email,"approved")
+print(database)
+
 
             
