@@ -11,26 +11,27 @@ def welcome_message():
 # to avoid duplicate requests
 
 database = {}
-# Based on the provided details the applicant will receive points.
-# If the score is high enough the application will be approved, if too low it will be auto rejected.
-score = 0
+
 
 class Applicant:
     """
-    Necessary etails of the applicant based on the loan eligibility will be decided
+    Necessary details of the applicant based on the loan eligibility will be decided
     """
 
-    def __init__(self, name, email, phone, age, marital_status, kids, income, expenses, loan_amount, monthly_payment):
+    def __init__(self, name, email, phone, age, marital_status, kids, employment, income, expenses, loan_amount, monthly_payment):
         self.name = name
         self.email = email
         self.phone = phone
         self.age = age
         self.marital_status = marital_status
         self.kids = kids
+        self.employment = employment
         self.income = income
         self.expenses = expenses
         self.loan_amount = loan_amount
         self.monthly_payment = monthly_payment
+        self.score = 0
+        self.interest_rate = 1
 
     def summary(self):
         """
@@ -44,6 +45,7 @@ class Applicant:
                 f"Age: {self.age}\n"
                 f"Marital status: {self.marital_status}\n"
                 f"Kids: {self.kids}\n"
+                f"Employment status: {self.employment}\n"
                 f"Monthly income: {self.income}\n"
                 f"Monthly expense: {self.expenses}\n"
                 f"Loan amount: {self.loan_amount}\n"
@@ -57,14 +59,89 @@ class Applicant:
         answer = input(
             "To make any changes on the details above enter c and press enter,else enter s and press enter: ")
         return answer
-
-    def decision(self):
-        if self.income - self.expenses > self.monthly_payment * 2:
-            return "approved"
-        elif self.income - self.expenses < self.monthly_payment*2:
-            return "the requested amount cannot be approved"
+    
+    def check_score_for_age(self):
+        """
+        Calculate the score/interest for the age of the applicant
+        """
+        if self.age < 18:
+            self.score -= 100
+        elif self.age < 25 or self.age > 18:
+            self.score += 10
+            self.interest_rate += 0.02
+        elif self.age >= 25 or self.age < 60:
+            self.score += 20
+            self.interest_rate += 0.01
         else:
-            return "rejected"
+            self.score += 0
+            self.interest_rate += 0.03
+        return self.score, self.interest_rate
+
+                
+    def check_score_for_cash_flow(self):
+        """
+        Calculate score/interest based on the income,expense considering the monthly payment for the request loan
+        """
+        if self.expenses > self.income:
+            self.score -= 100
+        elif self.income > self.expenses:
+            if self.income - self.expenses > self.monthly_payment*2:
+                self.score += 30
+                self.interest_rate += 0.01
+            elif self.income - self.expense >= self.monthly_payment*1.5:
+                self.score += 20
+                self.interest_rate += 0.02
+            else:
+                self.score += 0
+                self.interest_rate += 0.03
+        else:
+            self.score += 0
+        return self.score, self.interest_rate
+
+    def check_score_for_marital_status(self):
+        """
+        Score/Interest for the marital status
+        """
+        if self.marital_status.capitalize()[0] == "M":
+            self.score += 20
+            self.interest_rate += 0.01
+        else:
+            self.score += 10
+            self.interest_rate += 0.02
+        return self.score, self.interest_rate
+
+    def check_score_for_kids(self):
+        """
+        Score/Interest based on the number of kids
+        """
+        if self.kids == 0:
+            self.score += 30
+            self.interest_rate += 0.01
+        elif self.kids > 0 and self.kids < 3:
+            self.score += 20
+            self.interest_rate += 0.02
+        else:
+            self.score += 10
+            self.interest_rate += 0.03
+        return self.score, self.interest_rate
+
+    def employment_status(self):
+        """
+        Score/Interest for employment status
+        """
+        if self.employment:
+            self.score += 30
+            self.interest_rate += 0.01
+        else:
+            self.score -= 100
+        return self.score, self.interest_rate
+
+    def calculate_monthly_payment(self):
+        """
+        Calculating the monthly payment with interest 
+        """
+        self.monthly_payment *= self.interest_rate
+        return self.monthly_payment
 
     def add_to_database(self):
         """
@@ -100,12 +177,29 @@ def applicant_details():
     marital_status = input("What is your marital status(Married/Single)?: ")
     while marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
         marital_status = input("Please enter either married or single: ")
+    if marital_status.capitalize()[0] == "Y":
+        marital_status = "Married"
+    else:
+        marital_status = "Single"
     while True:
         try:
             kids = int(input("Number of dependent kids: "))
             break
         except ValueError:
             print("Please enter a valid number. ")
+    while True:
+        try:
+            employment = input("Are you employed?: ")
+            if employment.capitalize()[0] == "Y":
+                employment = True
+                break
+            elif employment.capitalize()[0] == "N":
+                employment = False
+                break
+            else:
+                print("Please enter either yes or no!")      
+        except IndexError:
+            print("No data was entered.") 
     while True:
         try:
             income = int(input("Monthly income: "))
@@ -127,14 +221,17 @@ def applicant_details():
                 answer = input(
                     "Sorry the request amount is too high. The maximum amount is 20000. Would you like to proceed with the max amount? y/n :")
                 if answer.capitalize()[0] == "N":
-                    loan_amount = 0
+                    print("-------------------------------------------")
+                    print("Application cancelled!")
+                    print("-------------------------------------------")
+                    return False
                 elif answer.capitalize()[0] == "Y":
                     loan_amount = 20000
-                    break
                 else:
                     print("Sorry, you have entered a wrong character. Enter y or n.")
             else:
                 break
+            break
         except ValueError:
             print("Incorrect data was entered.")
     while True:
@@ -149,75 +246,26 @@ def applicant_details():
                 print("-------------------------------------------")
                 monthly_payment = int(input("Please enter higher monthly payment: "))
                 print("-------------------------------------------")
-        except ValueError:
+        except (ValueError,ZeroDivisionError,UnboundLocalError):
             print("Incorrect data was entered.")
         break
         
 
-    return name, email, phone, age, marital_status, kids, income, expense, loan_amount, monthly_payment
-
-def check_score_for_age(age):
-    """
-    Calculate the score for the age of the applicant
-    """
-    if age < 25 or age > 18:
-        score += 10
-    elif age >= 25 or age < 60:
-        score += 20
-    else:
-        score += 0
-    return score
-            
-def check_score_for_cash_flow(income, expense,monthly_payment):
-    """
-    Calculate score based on the income,expense considering the monthly payment for the request loan
-    """
-    if expense > income:
-        score += 0
-    elif income > expense:
-        if income - expense > monthly_payment*2:
-            score += 30
-        elif income - expense > monthly_payment:
-            score += 10
-        else:
-            score += 0
-    else:
-        score += 0
-    return score
-
-def check_score_for_marital_status(marital_status):
-    """
-    Score for the marital status
-    """
-    if marital_status.capitalize()[0] == "Y":
-        score += 20
-    else:
-        score += 10
-    return score
-
-def check_score_for_kids(kids):
-    """
-    Score based on the number of kids
-    """
-    if kids == 0:
-        score += 30
-    elif kids > 0 and kids < 3:
-        score += 10
-    else:
-        score +=0
-    return score
-
-def calculate_monthly_payment(loan_amount,monthly_payment):
-    """
-    Calculating the monthly payment with interest 
-    """
-    interest = 1.1
+    return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
     
     
 
 user = applicant_details()
-new_applicant = Applicant(*user)
+if user:
+    applicant = Applicant(*user)
+    print(applicant.summary())
+    applicant.check_score_for_age()
+    applicant.check_score_for_cash_flow()
+    applicant.check_score_for_kids()
+    applicant.check_score_for_marital_status()
+    applicant.calculate_monthly_payment()
+    print(applicant.score)
+    print(applicant.interest_rate)
+    print(applicant.monthly_payment)
 
-print(new_applicant.summary())
 
-# applicant_details()
