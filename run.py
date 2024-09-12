@@ -37,7 +37,7 @@ class Applicant:
         """
         Summary of the provided details
         """
-        return ("-------------------------------------------"
+        return ("-------------------------------------------\n"
                 f"Hello {self.name}!\n"
                 f"Please check if the details below are correct:\n"
                 f"Email: {self.email}\n"
@@ -88,7 +88,7 @@ class Applicant:
             if self.income - self.expenses > self.monthly_payment*2:
                 self.score += 30
                 self.interest_rate += 0.01
-            elif self.income - self.expense >= self.monthly_payment*1.5:
+            elif self.income - self.expenses >= self.monthly_payment*1.5:
                 self.score += 20
                 self.interest_rate += 0.02
             else:
@@ -147,7 +147,7 @@ class Applicant:
         """
         Add the applicant's email to database as key and the applications status as value
         """
-        database[self.email] = self.decision()
+        database[self.name] = {'email' : self.email, 'score' : self.score, 'loan amount' : self.loan_amount}
         return database
 
 
@@ -255,17 +255,22 @@ def applicant_details():
     
     
 
-user = applicant_details()
-if user:
-    applicant = Applicant(*user)
-    print(applicant.summary())
-    applicant.check_score_for_age()
-    applicant.check_score_for_cash_flow()
-    applicant.check_score_for_kids()
-    applicant.check_score_for_marital_status()
-    applicant.calculate_monthly_payment()
-    print(applicant.score)
-    print(applicant.interest_rate)
-    print(applicant.monthly_payment)
+def run_app():
+    welcome_message()
+    user = applicant_details()
+    if user:
+        applicant = Applicant(*user)
+        print(applicant.summary())
+        applicant.check_score_for_age()
+        applicant.check_score_for_cash_flow()
+        applicant.check_score_for_kids()
+        applicant.check_score_for_marital_status()
+        applicant.calculate_monthly_payment()
+        print(applicant.score)
+        print(applicant.interest_rate)
+        print(applicant.monthly_payment)
+        applicant.add_to_database()
 
 
+
+run_app()
