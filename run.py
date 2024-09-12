@@ -39,7 +39,6 @@ class Applicant:
         """
         return ("-------------------------------------------\n"
                 f"Hello {self.name}!\n"
-                f"Please check if the details below are correct:\n"
                 f"Email: {self.email}\n"
                 f"Phone number: {self.phone}\n"
                 f"Age: {self.age}\n"
@@ -56,9 +55,81 @@ class Applicant:
         """
         Based on user input changes can be made on details or continue
         """
+        print("-------------------------------------------\n")
         answer = input(
-            "To make any changes on the details above enter c and press enter,else enter s and press enter: ")
-        return answer
+            "The above details are correct? y/n: ")
+        while True:
+            try:
+                if answer.capitalize()[0] == "Y":
+                    print("Thank you for the confirmaiton. Now we are checking if you are eligible for a loan...")
+                    break
+                elif answer.capitalize()[0] == "N":
+                    print(f"1. {self.name}\n"
+                          f"2. {self.email}\n"
+                          f"3. {self.phone}\n"
+                          f"4. {self.age}\n"
+                          f"5. {self.marital_status}\n"
+                          f"6. {self.kids}\n"
+                          f"7. {self.employment}\n"
+                          f"8. {self.income}\n"
+                          f"9. {self.expenses}\n"
+                          f"10. {self.loan_amount}\n"
+                          f"11. {self.monthly_payment}\n"
+                          "12. Confirm details")
+                    change = input("Please enter the number of the row that needs to be updated: ")
+                    if change == '1':
+                        self.name = input("Please enter the correct name: ")
+                    elif change == '2':
+                        self.email = input("Enter the correct email address: ")
+                    elif change == "3":
+                        self.phone = input("Eneter the correct phone number: ")
+                    elif change == "4":
+                        self.age = int(input("Enter your correct age: "))
+                    elif change == "5":
+                        if self.marital_status.capitalize()[0] == "S":
+                            self.marital_status = "Married"
+                        else:
+                            self.marital_status = "Single"
+                    elif change == "6":
+                        self.kids = int(input("Please enter the number of dependent kids: "))
+                    elif change == "7":
+                        if self.employment.capitalize()[0] == "Y":
+                            self.employment = "N"
+                        else:
+                            self.employment = "Y"
+                    elif change == "8":
+                        try:
+                            self.income = int(input("Enter the correct income amount: "))
+                        except ValueError:
+                            print("Wrong data was entered. ")
+                    elif change == "9":
+                        try:
+                            self.expenses = int(input("Enter the monthly expenses: "))
+                        except ValueError:
+                            print("Wrong data was entered.")
+                    elif change == "10":
+                        try:
+                            self.loan_amount = int(input("Correct loan amount: "))
+                            if self.loan_amount > 20000:
+                                self.loan_amount = 20000
+                        except ValueError:
+                            print("Wrong data was entered.")
+                    elif change == "11":
+                        try:
+                            self.monthly_payment =int(input("Enter the update estimated monthly payment: "))
+                            if self.loan_amount/self.monthly_payment > 60:
+                                print("Sorry the loan lenght exceeds the maximum of 60 months.")
+                        except ValueError:
+                            print("Wrong data was entered.")
+                    elif change == "12":
+                        break
+                    else:
+                        change = input("Number out of range. Entere a number between 1-12")
+                else:
+                    print("Please enter y or n.")
+            except ValueError:
+                print("Wrong data was entered.")
+        return self.summary()
     
     def check_score_for_age(self):
         """
@@ -142,12 +213,20 @@ class Applicant:
         """
         self.monthly_payment *= self.interest_rate
         return self.monthly_payment
+    
+    def decision(self):
+        if self.score > 90:
+            return f"Application approved with an interest rate of {(self.interest_rate - 1)*100}%."
+        elif self.score <= 90 and self.score > 50:
+            return f"Application approved with an interest rate of {(self.interest_rate - 1)*100}%."
+        else:
+            return "Sorry you have not met the minimum requirements for a loan."
 
     def add_to_database(self):
         """
         Add the applicant's email to database as key and the applications status as value
         """
-        database[self.name] = {'email' : self.email, 'score' : self.score, 'loan amount' : self.loan_amount}
+        database[self.name] = {'Email' : self.email, 'Score' : self.score, 'Loan amount' : self.loan_amount, "Application status" : self.decision()}
         return database
 
 
@@ -261,6 +340,7 @@ def run_app():
     if user:
         applicant = Applicant(*user)
         print(applicant.summary())
+        print(applicant.make_changes())
         applicant.check_score_for_age()
         applicant.check_score_for_cash_flow()
         applicant.check_score_for_kids()
