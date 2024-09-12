@@ -37,7 +37,7 @@ class Applicant:
         """
         Summary of the provided details
         """
-        return ("-------------------------------------------\n"
+        return ("---------------------------------------------------\n"
                 f"Hello {self.name}!\n"
                 f"Email: {self.email}\n"
                 f"Phone number: {self.phone}\n"
@@ -93,10 +93,10 @@ class Applicant:
                     elif change == "6":
                         self.kids = int(input("Please enter the number of dependent kids: "))
                     elif change == "7":
-                        if self.employment.capitalize()[0] == "Y":
-                            self.employment = "N"
+                        if self.employment == True:
+                            self.employment = False
                         else:
-                            self.employment = "Y"
+                            self.employment = True
                     elif change == "8":
                         try:
                             self.income = int(input("Enter the correct income amount: "))
@@ -124,7 +124,7 @@ class Applicant:
                     elif change == "12":
                         break
                     else:
-                        change = input("Number out of range. Entere a number between 1-12")
+                        print("Number out of range. Entere a number between 1-12")
                 else:
                     print("Please enter y or n.")
             except ValueError:
@@ -215,12 +215,24 @@ class Applicant:
         return self.monthly_payment
     
     def decision(self):
+        """
+        Check the applicant score and approved/reject the loan request
+        """
         if self.score > 90:
-            return f"Application approved with an interest rate of {(self.interest_rate - 1)*100}%."
+            print("****************************************************\n"
+                  f"Application approved with an interest rate of {round((self.interest_rate - 1)*100)}%.\n"
+                  "****************************************************")
+            return "Approved"
         elif self.score <= 90 and self.score > 50:
-            return f"Application approved with an interest rate of {(self.interest_rate - 1)*100}%."
+            print("****************************************************\n"
+                  f"Application approved with an interest rate of {round((self.interest_rate - 1)*100)}%.\n"
+                  "****************************************************")
+            return "Approved"
+        
         else:
-            return "Sorry you have not met the minimum requirements for a loan."
+            print("Sorry you have not met the minimum requirements for a loan.")
+            return "Rejected"
+        
 
     def add_to_database(self):
         """
@@ -237,9 +249,11 @@ def applicant_details():
     name = input("Please provide your full name: ")
     while name == "" or len(name) < 5:
         name = input("Please enter a valid name: ")
+    print(" ")
     email = input("Please provide your contact email address: ")
     while "@" not in email or "." not in email:
         email = input("Please enter a valid email address: ")
+    print(" ")
     phone = input("Please provide your contact phone number: ")
     while len(phone) > 10 or len(phone) < 10:
         phone = input("Please enter a valid phone number: ")
@@ -346,11 +360,7 @@ def run_app():
         applicant.check_score_for_kids()
         applicant.check_score_for_marital_status()
         applicant.calculate_monthly_payment()
-        print(applicant.score)
-        print(applicant.interest_rate)
-        print(applicant.monthly_payment)
+        applicant.decision()
         applicant.add_to_database()
-
-
 
 run_app()
