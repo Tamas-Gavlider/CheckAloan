@@ -389,6 +389,9 @@ def applicant_details():
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
 def main_menu():
+    """
+    Main menu of the app, user can either go to the application form or close the app
+    """
     print("1. Fill out the loan application.")
     print("2. Closed the application.")
     print("-----------------------------------------------")
@@ -415,15 +418,10 @@ def run_app():
             print(applicant.make_changes())
             applicant.employment_status()
             applicant.check_score_for_age()
-            print(applicant.score)
             applicant.check_score_for_cash_flow()
-            print(applicant.score)
             applicant.check_score_for_kids()
-            print(applicant.score)
             applicant.check_score_for_marital_status()
-            print(applicant.score)
             applicant.calculate_monthly_payment()
-            print(applicant.score)
             print("The application is being reviewed...")
             print("------------------------------------")
             print(applicant.decision())
@@ -433,11 +431,11 @@ def run_app():
             print("You application have been saved.")
             print("------------------------------------")
             print("Thank you for choosing CheckAloan.")
-            print("------------------------------------")
-            break
+            print("Returning to main menu.")
+            print("-----------------------------------------")
         else:
             print("Application is closing...")
-            return False
+            
 
 run_app()
 
