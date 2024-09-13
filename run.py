@@ -60,20 +60,20 @@ class Applicant:
             try:
                 if answer.capitalize()[0] == "Y":
                     print(
-                        "Thank you for the confirmaiton. Now we are checking if you are eligible for a loan...")
+                        "Thank you for the confirmation. Now we are checking if you are eligible for a loan...")
                     break
                 elif answer.capitalize()[0] == "N":
-                    print(f"1. {self.name}\n"
-                          f"2. {self.email}\n"
-                          f"3. {self.phone}\n"
-                          f"4. {self.age}\n"
-                          f"5. {self.marital_status}\n"
-                          f"6. {self.kids}\n"
-                          f"7. {self.employment}\n"
-                          f"8. {self.income}\n"
-                          f"9. {self.expenses}\n"
-                          f"10. {self.loan_amount}\n"
-                          f"11. {self.monthly_payment}\n"
+                    print(f"1. Name: {self.name}\n"
+                          f"2. Email: {self.email}\n"
+                          f"3. Phone: {self.phone}\n"
+                          f"4. Age: {self.age}\n"
+                          f"5. Marital status: {self.marital_status}\n"
+                          f"6. Kids: {self.kids}\n"
+                          f"7. Employment status: {self.employment}\n"
+                          f"8. Income: {self.income}\n"
+                          f"9. Expenses: {self.expenses}\n"
+                          f"10. Loan amount: {self.loan_amount}\n"
+                          f"11. Monthly payment: {self.monthly_payment}\n"
                           "12. Confirm details")
                     change = input(
                         "Please enter the number of the row that needs to be updated: ")
@@ -116,17 +116,24 @@ class Applicant:
                                 input("Correct loan amount: "))
                             if self.loan_amount > 20000:
                                 self.loan_amount = 20000
+                            elif self.loan_amount < self.monthly_payment:
+                                self.loan_amount = int(input("The loan amount is less than the monthly"
+                                                             "payment. Enter higher amount: " ))
                         except ValueError:
                             print("Wrong data was entered.")
                     elif change == "11":
-                        try:
-                            self.monthly_payment = int(
-                                input("Enter the update estimated monthly payment: "))
-                            if self.loan_amount/self.monthly_payment > 60:
-                                print(
-                                    "Sorry the loan lenght exceeds the maximum of 60 months.")
-                        except ValueError:
-                            print("Wrong data was entered.")
+                        self.monthly_payment = int(
+                                    input("Enter the updated estimated monthly payment: "))
+                        while self.monthly_payment > self.loan_amount or self.loan_amount/self.monthly_payment > 60:
+                            try:
+                                if self.loan_amount/self.monthly_payment > 60:
+                                    print("Sorry the loan lenght exceeds the maximum of 60 months.")
+                                    self.monthly_payment = int(input("Enter the updated estimated monthly payment: "))
+                                elif self.loan_amount < self.monthly_payment:
+                                    self.monthly_payment = int(
+                                            input("The monthly payment cannot exceed the loan amount. The monthly payment must be less: "))
+                            except ValueError:
+                                print("Wrong data was entered.")
                     elif change == "12":
                         break
                     else:
@@ -142,7 +149,7 @@ class Applicant:
         Calculate the score/interest for the age of the applicant
         """
         if self.age < 18:
-            self.score -= 100
+            self.score -= 130
         elif self.age < 25 or self.age > 18:
             self.score += 10
             self.interest_rate += 0.02
@@ -209,7 +216,7 @@ class Applicant:
             self.score += 30
             self.interest_rate += 0.01
         else:
-            self.score -= 100
+            self.score -= 130
         return self.score, self.interest_rate
 
     def calculate_monthly_payment(self):
@@ -237,9 +244,13 @@ class Applicant:
         if self.decision() == "Approved":
             print("------------------------------------\n"
                   f" The approved loan amount is {self.loan_amount}\n"
-                  f" The interest rate is {self.interest_rate}%\n"
-                  f" The monthly payment is 150{self.monthly_payment*self.interest_rate}\n"
+                  f" The interest rate is {round((self.interest_rate-1)*100)}%\n"
+                  f" The monthly payment is {round(self.monthly_payment*self.interest_rate)}\n"
                   "------------------------------------")
+        else:
+            print("Unfortunately, your loan request cannot be approved based on the provided details.\n"
+                  f"You have reached {self.score} points based on the provided details.\n"
+                  "It is not sufficient for the loan approval.")
     
     
 
@@ -248,7 +259,8 @@ class Applicant:
         Add the applicant's email to database as key and the applications status as value
         """
         database[self.name] = {'Email': self.email, 'Score': self.score,
-                               'Loan amount': self.loan_amount, "Monthly payment":self.monthly_payment*self.interest_rate, "Application status": self.decision()}
+                               'Loan amount': self.loan_amount, "Monthly payment":self.monthly_payment*self.interest_rate, 
+                               "Application": self.decision()}
         return database
 
 
@@ -354,58 +366,78 @@ def applicant_details():
         except ValueError:
             print("Incorrect data was entered.")
     print(" ")
-    while True:
-        try:
-            monthly_payment = int(
+    monthly_payment = int(
                 input("How much would you like to pay back monthly: "))
-            while loan_amount/monthly_payment > 60:
-                print("-------------------------------------------")
+    while loan_amount/monthly_payment > 60 or loan_amount < monthly_payment:
+        try:
+            if loan_amount/monthly_payment > 60:
+                print("-------------------------------------------------")
                 print("Sorry the maximum length of the loan is 5 years.")
-                print("-------------------------------------------")
+                print("-------------------------------------------------")
                 print("Based on the entered details the loan length"
                     f" is {round(loan_amount/monthly_payment)}")
-                print("-------------------------------------------")
+                print("-------------------------------------------------")
                 monthly_payment = int(
                     input("Please enter higher monthly payment: "))
-                print("-------------------------------------------")
+                print("-------------------------------------------------")
+            elif loan_amount < monthly_payment:
+                monthly_payment = int(
+                    input("The monthly payment cannot be higher than the loan amount. Monthly payment must be less: "))
         except (ValueError, ZeroDivisionError, UnboundLocalError):
             print("Incorrect data was entered.")
-        break
 
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
+def main_menu():
+    print("1. Fill out the loan application.")
+    print("2. Closed the application.")
+    print("-----------------------------------------------")
+    choice = input("Please press 1 to start the loan application or 2 to quit: ")
+    while choice != "1" or choice != "2":
+        if choice == "1":
+            return True
+        elif choice == "2":
+            print("Application is closing...")
+            return False
+        else:
+            choice = input("Please enter either 1 or 2: ")
+    
+        
 
 def run_app():
     welcome_message()
-    while True:
+    while main_menu():
+        print("-----------------------------------------------")
         user = applicant_details()
         if user:
             applicant = Applicant(*user)
             print(applicant.summary())
             print(applicant.make_changes())
+            applicant.employment_status()
             applicant.check_score_for_age()
+            print(applicant.score)
             applicant.check_score_for_cash_flow()
+            print(applicant.score)
             applicant.check_score_for_kids()
+            print(applicant.score)
             applicant.check_score_for_marital_status()
+            print(applicant.score)
             applicant.calculate_monthly_payment()
-            if applicant.decision() == "Rejected":
-                print("*********************************************************\n"
-                    "Sorry you have not met the minimum requirements for a loan.\n"
-                    f"Your score is {applicant.score}.\n"
-                    "***********************************************************")
-            elif applicant.decision() == "Approved":
-                 print("****************************************************\n"
-                    f"Application approved with an interest rate of {round((applicant.interest_rate - 1)*100)}%.\n"
-                    f"Your score is {applicant.score}.\n"
-                    "****************************************************")
-            else:
-                print("****************************************************\n"
-                    f"Application approved with an interest rate of {round((applicant.interest_rate - 1)*100)}%.\n"
-                    f"Your score is {applicant.score}.\n"
-                    "****************************************************")   
+            print(applicant.score)
+            print("The application is being reviewed...")
+            print("------------------------------------")
+            print(applicant.decision())
+            applicant.loan_details()
             applicant.add_to_database()
+            print("------------------------------------")
+            print("You application have been saved.")
+            print("------------------------------------")
+            print("Thank you for choosing CheckAloan.")
+            print("------------------------------------")
+            break
         else:
-            print("Application is being closed.")
+            print("Application is closing...")
             return False
 
+run_app()
 
