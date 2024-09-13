@@ -1,16 +1,16 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# CheckAloan
 
-Welcome,
+Checkaloan is aPython terminal-based application that evaluates the loan eligibility of a user.<br> The app calculates a score and interest rate based on the user's input and provides a final decision on the loan approval.<br> The app runs on Heroku.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **May 14, 2024**
+## How to use
 
-## Reminders
+- The user provides personal and financial details such as income, expenses, age, marital status, etc.
+- The app calculates the score and interest rate based on the provided information.
+- Based on the calculated score, the app makes a final decision:
+    - Approved if the user is eligible for the loan.
+    - Rejected if the user is not eligible.
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
-
-## Creating the Heroku app
+## Features
 
 When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
 
@@ -23,10 +23,16 @@ If you have credentials, such as in the Love Sandwiches project, you must create
 
 Connect your GitHub repository and deploy as normal.
 
-## Constraints
+### Future Features
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+## Data Model
 
----
+## Testing
 
-Happy coding!
+### Bugs
+
+### Remaining Bugs
+
+### Validator Testing
+
+## Deployment
