@@ -56,6 +56,98 @@ class Applicant:
                 f"Monthly payment: {self.monthly_payment}\n"
                 "-------------------------------------------")
 
+    def change_name(self):
+        """
+        Update the name
+        """
+        self.name = input("Please enter the correct name:\n")
+
+    def change_email(self):
+        """
+        Update the email address
+        """
+        self.email = input("Enter the correct email address:\n")
+
+    def change_phone(self):
+        """
+        Update the phone number
+        """
+        self.phone = input("Eneter the correct phone number:\n")
+
+    def change_age(self):
+        """
+        Update the age
+        """
+        self.age = int(input("Enter your correct age:\n"))
+
+    def change_marital_status(self):
+        """
+        Update marital status
+        """
+        if self.marital_status.capitalize()[0] == "S":
+            self.marital_status = "Married"
+
+    def change_kids(self):
+        """
+        Update the number of dependent kids
+        """
+        self.kids = int(input("Please enter the number of dependent kids:\n"))
+
+    def change_employment_status(self):
+        """
+        Update employment status
+        """
+        if self.employment is True:
+            self.employment = False
+
+    def change_income(self):
+        """
+        Update income
+        """
+        try:
+            self.income = int(input("Enter the correct income amount:\n"))
+        except ValueError:
+            print("Wrong data was entered.")
+
+    def change_expense(self):
+        """
+        Update expenses
+        """
+        try:
+            self.expenses = int(input("Enter the monthly expenses:\n"))
+        except ValueError:
+            print("Wrong data was entered.")
+
+    def change_loan(self):
+        """
+        Update loan amount
+        """
+        try:
+            self.loan_amount = int(input("Correct loan amount:\n"))
+            if self.loan_amount > 20000:
+                self.loan_amount = 20000
+            elif self.loan_amount < self.monthly_payment:
+                self.loan_amount = int(input("The loan amount is less than the monthly payment."
+                                             "Enter higher amount:\n"))
+        except ValueError:
+            print("Wrong data was entered.")
+
+    def change_monthly_payment(self):
+        """
+        Update the monthly payment
+        """
+        self.monthly_payment = int(
+            input("Enter the updated estimated monthly payment:\n"))
+        while self.monthly_payment > self.loan_amount or self.loan_amount/self.monthly_payment > 60:
+            try:
+                if self.loan_amount/self.monthly_payment > 60:
+                    print("Sorry the loan lenght exceeds the maximum of 60 months.")
+                    self.monthly_payment = int(input("Enter the updated estimated monthly payment:\n"))
+                elif self.loan_amount < self.monthly_payment:
+                    self.monthly_payment = int(input("The monthly payment cannot exceed the loan amount. The monthly payment must be less:\n"))
+            except ValueError:
+                print("Wrong data was entered.")
+        
     def make_changes(self):
         """
         Based on user input changes can be made on details or continue
@@ -83,65 +175,29 @@ class Applicant:
                           f"11. Monthly payment: {self.monthly_payment}\n"
                           "12. Confirm details")
                     change = input("Please enter the number of the row that"
-                                   "needs to be updated:\n")
+                                   " needs to be updated:\n")
                     if change == '1':
-                        self.name = input("Please enter the correct name:\n")
+                        self.change_name()
                     elif change == '2':
-                        self.email = input("Enter the correct email address:\n")
+                        self.change_email()
                     elif change == "3":
-                        self.phone = input("Eneter the correct phone number:\n")
+                        self.change_phone()
                     elif change == "4":
-                        self.age = int(input("Enter your correct age:\n"))
+                        self.change_age()
                     elif change == "5":
-                        if self.marital_status.capitalize()[0] == "S":
-                            self.marital_status = "Married"
-                        else:
-                            self.marital_status = "Single"
+                        self.change_marital_status()
                     elif change == "6":
-                        self.kids = int(
-                            input("Please enter the number of dependent kids:\n"))
+                        self.change_kids()
                     elif change == "7":
-                        if self.employment is True:
-                            self.employment = False
-                        else:
-                            self.employment = True
+                        self.change_employment_status()
                     elif change == "8":
-                        try:
-                            self.income = int(
-                                input("Enter the correct income amount:\n"))
-                        except ValueError:
-                            print("Wrong data was entered.")
+                        self.change_income()
                     elif change == "9":
-                        try:
-                            self.expenses = int(
-                                input("Enter the monthly expenses:\n"))
-                        except ValueError:
-                            print("Wrong data was entered.")
+                        self.change_expense()
                     elif change == "10":
-                        try:
-                            self.loan_amount = int(
-                                input("Correct loan amount:\n"))
-                            if self.loan_amount > 20000:
-                                self.loan_amount = 20000
-                            elif self.loan_amount < self.monthly_payment:
-                                self.loan_amount = int(input("The loan amount"
-                                                             "is less than the monthly payment."
-                                "Enter higher amount:\n"))
-                        except ValueError:
-                            print("Wrong data was entered.")
+                        self.change_loan()
                     elif change == "11":
-                        self.monthly_payment = int(
-                                    input("Enter the updated estimated monthly payment:\n"))
-                        while self.monthly_payment > self.loan_amount or self.loan_amount/self.monthly_payment > 60:
-                            try:
-                                if self.loan_amount/self.monthly_payment > 60:
-                                    print("Sorry the loan lenght exceeds the maximum of 60 months.")
-                                    self.monthly_payment = int(input("Enter the updated estimated monthly payment:\n"))
-                                elif self.loan_amount < self.monthly_payment:
-                                    self.monthly_payment = int(
-                                            input("The monthly payment cannot exceed the loan amount. The monthly payment must be less:\n"))
-                            except ValueError:
-                                print("Wrong data was entered.")
+                        self.change_monthly_payment()
                     elif change == "12":
                         break
                     else:
