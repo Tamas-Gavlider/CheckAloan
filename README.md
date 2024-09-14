@@ -31,8 +31,12 @@ Connect your GitHub repository and deploy as normal.
 
 ### Bugs
 
+There was a logical error in the make_changes function, which allowed the loan amount to be set higher than 20,000. A while True loop was implemented to prevent this issue by continuously prompting the user to enter a lower amount. A similar bug occurred with the monthly payment, where users were able to set the monthly payment higher than the total loan amount. This was also resolved using a while True loop, ensuring that the monthly payment cannot exceed the loan amount and that the loan term does not exceed sixty months.
+
 ### Remaining Bugs
 
 ### Validator Testing
 
 ## Deployment
+
+App deployed via [Heroku](https://dashboard.heroku.com/apps).
