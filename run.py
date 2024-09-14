@@ -61,24 +61,37 @@ class Applicant:
         Update the name
         """
         self.name = input("Please enter the correct name:\n")
+        while self.name == "" or len(self.name) < 5:
+            self.name = input("Please enter a valid name:\n")
+        
 
     def change_email(self):
         """
         Update the email address
         """
         self.email = input("Enter the correct email address:\n")
-
+        while "@" not in self.email and "." not in self.email:
+             self.email = input("Please enter a valid email address:\n")
+            
     def change_phone(self):
         """
         Update the phone number
         """
-        self.phone = input("Eneter the correct phone number:\n")
+        self.phone = input("Enter the correct phone number:\n")
+        while len(self.phone) != 10:
+            self.phone = input("Please enter a valid phone number:\n")
 
     def change_age(self):
         """
         Update the age
         """
-        self.age = int(input("Enter your correct age:\n"))
+        try:
+            self.age = int(input("Enter your correct age:\n"))
+            if self.age < 18:
+                print("Sorry we cannot approve the credit if you are under 18.")
+                return False
+        except (ValueError, IndexError):
+            print("Wrong data was entered.")
 
     def change_marital_status(self):
         """
@@ -91,7 +104,10 @@ class Applicant:
         """
         Update the number of dependent kids
         """
-        self.kids = int(input("Please enter the number of dependent kids:\n"))
+        try:
+            self.kids = int(input("Please enter the number of dependent kids:\n"))
+        except ValueError:
+            print("Wrong data was entered.")
 
     def change_employment_status(self):
         """
@@ -106,7 +122,7 @@ class Applicant:
         """
         try:
             self.income = int(input("Enter the correct income amount:\n"))
-        except ValueError:
+        except (ValueError, IndexError):
             print("Wrong data was entered.")
 
     def change_expense(self):
@@ -115,7 +131,7 @@ class Applicant:
         """
         try:
             self.expenses = int(input("Enter the monthly expenses:\n"))
-        except ValueError:
+        except (ValueError, IndexError):
             print("Wrong data was entered.")
 
     def change_loan(self):
@@ -124,13 +140,15 @@ class Applicant:
         """
         try:
             self.loan_amount = int(input("Correct loan amount:\n"))
-            if self.loan_amount > 20000:
-                self.loan_amount = 20000
-            elif self.loan_amount < self.monthly_payment:
-                self.loan_amount = int(input("The loan amount is less than the monthly payment."
-                                             "Enter higher amount:\n"))
+            while self.loan_amount < self.monthly_payment and self.loan_amount > 20000:
+                if self.loan_amount > 20000:
+                    self.loan_amount = int(input("The maximum amount is 20000. Please do not enter higher amount:\n"))
+                elif self.loan_amount < self.monthly_payment:
+                    self.loan_amount = int(input("The loan amount is less than the monthly payment."
+                                                        "Enter higher amount:\n"))
         except ValueError:
             print("Wrong data was entered.")
+        
 
     def change_monthly_payment(self):
         """
@@ -173,7 +191,8 @@ class Applicant:
                           f"9. Expenses: {self.expenses}\n"
                           f"10. Loan amount: {self.loan_amount}\n"
                           f"11. Monthly payment: {self.monthly_payment}\n"
-                          "12. Confirm details")
+                          "12. Confirm details\n"
+                          "-------------------------------------")
                     change = input("Please enter the number of the row that"
                                    " needs to be updated:\n")
                     if change == '1':
@@ -336,20 +355,23 @@ def applicant_details():
     phone = input("Please provide your contact phone number:\n")
     while len(phone) > 10 or len(phone) < 10:
         phone = input("Please enter a valid phone number:\n")
-    age = int(input("How old are you?:\n"))
     while True:
-        if age < 18:
-            print("You cannot apply for a loan. You must be at least 18 years old.\n"
-                  "------------------------------------------------------------------\n"
-                  "Application cancelled.")
-            return False
-        elif age > 18 and age < 65:
-            break
-        else:
-            print("Sorry you are too old to apply for a loan.\n"
-                  "-------------------------------------------\n"
-                  "Application cancelled.")
-            return False
+        try:
+            age = int(input("How old are you?:\n"))
+            if age < 18:
+                print("You cannot apply for a loan. You must be at least 18 years old.\n"
+                    "------------------------------------------------------------------\n"
+                    "Application cancelled.")
+                return False
+            elif age > 18 and age < 65:
+                break
+            else:
+                print("Sorry you are too old to apply for a loan.\n"
+                    "-------------------------------------------\n"
+                    "Application cancelled.")
+                return False
+        except ValueError:
+            print("Wrong data entered")
     marital_status = input("What is your marital status(Married/Single)?:\n")
     while marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
         marital_status = input("Please enter either married or single:\n")
@@ -408,11 +430,13 @@ def applicant_details():
                 elif answer.capitalize()[0] == "Y":
                     loan_amount = 20000
                 else:
-                    print("Sorry, you have entered a wrong character. Enter y or n.")
+                    answer = input("Sorry, you have entered a wrong character. Enter y or n:\n")
+                    while answer.capitalize()[0] != "Y" or answer.capitalize()[0] != "N":
+                        answer = input("Sorry, you have entered a wrong character. Enter y or n:\n")
             else:
                 break
             break
-        except ValueError:
+        except (ValueError, IndexError):
             print("Incorrect data was entered.")
     monthly_payment = int(
                 input("How much would you like to pay back monthly:\n"))
