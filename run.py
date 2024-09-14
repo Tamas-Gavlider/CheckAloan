@@ -122,7 +122,7 @@ class Applicant:
         """
         try:
             self.income = int(input("Enter the correct income amount:\n"))
-        except (ValueError, IndexError):
+        except (ValueError, IndexError,ZeroDivisionError):
             print("Wrong data was entered.")
 
     def change_expense(self):
@@ -131,23 +131,25 @@ class Applicant:
         """
         try:
             self.expenses = int(input("Enter the monthly expenses:\n"))
-        except (ValueError, IndexError):
+        except (ValueError, IndexError,ZeroDivisionError):
             print("Wrong data was entered.")
 
     def change_loan(self):
         """
         Update loan amount
         """
-        try:
-            self.loan_amount = int(input("Correct loan amount:\n"))
-            while self.loan_amount < self.monthly_payment and self.loan_amount > 20000:
+        while True:
+            try:
+                self.loan_amount = int(input("Correct loan amount:\n"))
                 if self.loan_amount > 20000:
                     self.loan_amount = int(input("The maximum amount is 20000. Please do not enter higher amount:\n"))
                 elif self.loan_amount < self.monthly_payment:
                     self.loan_amount = int(input("The loan amount is less than the monthly payment."
-                                                        "Enter higher amount:\n"))
-        except ValueError:
-            print("Wrong data was entered.")
+                                                            "Enter higher amount:\n"))
+                else:
+                    break
+            except (ValueError, IndexError,ZeroDivisionError):
+                print("Wrong data was entered.")
         
 
     def change_monthly_payment(self):
@@ -223,8 +225,9 @@ class Applicant:
                         print("Number out of range. Entere a number between 1-12")
                 else:
                     print("Please enter y or n.")
-            except ValueError:
-                print("Wrong data was entered.")
+            except (ValueError,IndexError):
+                change = input("Wron data entered. Plase enter"
+                                   " a valid number:\n")
         return self.summary()
 
     def check_score_for_age(self):
@@ -415,9 +418,9 @@ def applicant_details():
         except ValueError:
             print("Incorrect data was entered.")
     while True:
-        try:
-            loan_amount = int(
+        loan_amount = int(
                 input("How much money would you like to borrow?:\n"))
+        try:
             if loan_amount > 20000:
                 answer = input(
                     "Sorry the request amount is too high. The maximum amount is 20000. Would you "
@@ -440,8 +443,8 @@ def applicant_details():
             print("Incorrect data was entered.")
     monthly_payment = int(
                 input("How much would you like to pay back monthly:\n"))
-    while loan_amount/monthly_payment > 60 or loan_amount < monthly_payment:
-        try:
+    try:
+        while loan_amount/monthly_payment > 60 or loan_amount < monthly_payment:
             if loan_amount/monthly_payment > 60:
                 print("-------------------------------------------------")
                 print("Sorry the maximum length of the loan is 5 years.")
@@ -455,8 +458,10 @@ def applicant_details():
             elif loan_amount < monthly_payment:
                 monthly_payment = int(
                     input("The monthly payment cannot be higher than the loan amount. Monthly payment must be less:\n"))
-        except (ValueError, ZeroDivisionError, UnboundLocalError):
-            print("Incorrect data was entered.")
+            else:
+                break
+    except (ValueError, ZeroDivisionError):
+        print("Incorrect data was entered.")
 
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
