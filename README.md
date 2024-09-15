@@ -2,30 +2,46 @@
 
 Checkaloan is aPython terminal-based application that evaluates the loan eligibility of a user.<br> The app calculates a score and interest rate based on the user's input and provides a final decision on the loan approval.<br> The app runs on Heroku.
 
+[Here is the live version of my project](https://checkaloan-cdfe97fe02ce.herokuapp.com/)
+
+![AmIResponsive](docs/am-i-responsive.png)
 ## How to use
 
 - The user provides personal and financial details such as income, expenses, age, marital status, etc.
-- The app calculates the score and interest rate based on the provided information.
+- The app calculates the score and interest rate based on this information.
 - Based on the calculated score, the app makes a final decision:
-    - Approved if the user is eligible for the loan.
-    - Rejected if the user is not eligible.
+    - <bold>Approved</bold> if the user is eligible for the loan.
+    - <bold>Rejected</bold> if the user is not eligible.
 
 ## Features
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+### Existing features
 
-1. `heroku/python`
-2. `heroku/nodejs`
+ - Option to start the application form or quit the app.
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+![Welcome screen](docs/screenshots/welcome-screen.png)
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
+ - Accepts user inputs.
+ - Add the user's data to the database after the final decision
+ - Input validation and error-checking
+    - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.
+    - String inputs like name and phone must meet a minimum or exact length requirement.
+    - The email input must contain "@" and ".".
+    - Integer inputs will raise an error if 0,a string or no data is entered.
+    - If the input for age is less than 19, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
+    - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
+    - The monthly payment cannot exceed the loan amount. The user will be asked to adjust<br> the monthly payment.
+- Data maintaned in class instances. Except the welcome_message and applicant_details functions.<br> Those are handled outside of the class.
+- **welcome_message** will greet the user and, based on the input, either start the application or close it.
+- **applicant_details** will return the user inputs, which will be used to create a class object.
+- **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers.
+- "
 
 ### Future Features
 
 ## Data Model
+
+The features, scoring system,interest rate increase and criteria for the app were initially created in [excel](/docs/roadmap.xlsx).
 
 ## Testing
 

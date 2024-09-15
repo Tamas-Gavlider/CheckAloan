@@ -1,9 +1,23 @@
 def welcome_message():
-    """ Welcome message when the app starts """
+    """ Welcome message when the app starts
+    Main menu of the app, user can either go to the application form or close the app
+    """
     print("-------------------------")
     print(" Welcome to CheckAloan!\n"
           " Where you are not alone!")
     print("-------------------------")
+    print("1. Fill out the loan application.")
+    print("2. Closed the application.")
+    print("-----------------------------------------------")
+    choice = input("Please press 1 to start the loan application or 2 to quit:\n")
+    while choice != "1" or choice != "2":
+        if choice == "1":
+            return True
+        elif choice == "2":
+            print("Application is closing...")
+            return False
+        else:
+            choice = input("Please enter either 1 or 2:\n")
 
 
 # The applicant's email and application status will be stored in database
@@ -466,27 +480,8 @@ def applicant_details():
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
 
-def main_menu():
-    """
-    Main menu of the app, user can either go to the application form or close the app
-    """
-    print("1. Fill out the loan application.")
-    print("2. Closed the application.")
-    print("-----------------------------------------------")
-    choice = input("Please press 1 to start the loan application or 2 to quit:\n")
-    while choice != "1" or choice != "2":
-        if choice == "1":
-            return True
-        elif choice == "2":
-            print("Application is closing...")
-            return False
-        else:
-            choice = input("Please enter either 1 or 2:\n")
-
-
 def run_app():
-    welcome_message()
-    while main_menu():
+    while welcome_message():
         print("-----------------------------------------------")
         user = applicant_details()
         if user:
