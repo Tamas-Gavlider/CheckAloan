@@ -35,7 +35,6 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
 - **welcome_message** will greet the user and, based on the input, either start the application or close it.
 - **applicant_details** will return the user inputs, which will be used to create a class object.
 - **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers.
-- "
 
 ### Future Features
 
@@ -51,8 +50,23 @@ There was a logical error in the make_changes function, which allowed the loan a
 
 ### Remaining Bugs
 
+No bugs remaining.
+
 ### Validator Testing
+
+- PEP8 
+    - No errors were returned from [PEP8](https://pep8ci.herokuapp.com/)
 
 ## Deployment
 
-App deployed via [Heroku](https://dashboard.heroku.com/apps).
+This project was deployed used Code Institute's mock terminal for [Heroku](https://dashboard.heroku.com/apps).<br>
+Steps for deployment:
+- Fork or clone the repository CheckAloan
+- Create a new Heroku app 
+- Set the buildbacks for **Python** and **NodeJS** in that order
+- Link the Heroku app to the repository
+- Click on <strong>Deploy</strong>
+
+## Credits 
+
+Code Institute for the deployment terminal and Readme template.
