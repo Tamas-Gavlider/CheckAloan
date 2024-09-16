@@ -63,17 +63,22 @@ def applicant_details():
     while True:
         try:
              marital_status = input("What is your marital status(Married/Single)?:\n")
-             if marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
+             if marital_status.capitalize()[0] == "S":
+                 marital_status = "Single"
+                 break
+             elif marital_status.capitalize()[0] == "M":
+                 marital_status = "Married"
+                 break
+             elif marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
                     marital_status = input("Please enter either married or single:\n")
                     if marital_status.capitalize()[0] == "M":
                         marital_status = "Married"
+                        break
                     elif marital_status.capitalize()[0] == "S":
-                            marital_status = "Single"
+                        marital_status = "Single"
+                        break
                     else:
                         print("Wrong data provided.")
-             
-             else:
-                 break
         except IndexError:
             print("No data was entered.")
     
@@ -346,59 +351,60 @@ class Applicant:
         Based on user input changes can be made on details or continue
         """
         print("-------------------------------------------\n")
+   
         try:
             answer = input("The above details are correct? y/n:\n")
             while True:
-                    if answer.capitalize()[0] == "Y":
+                    if answer.capitalize()[0] == "" or answer.capitalize()[0] == "Y":
                         print("Thank you for the confirmation. Now we are checking"
-                            " if you are eligible for a loan...")
+                                " if you are eligible for a loan...")
                         break
                     elif answer.capitalize()[0] == "N":
-                        print(f"1. Name: {self.name}\n"
-                            f"2. Email: {self.email}\n"
-                            f"3. Phone: {self.phone}\n"
-                            f"4. Age: {self.age}\n"
-                            f"5. Marital status: {self.marital_status}\n"
-                            f"6. Kids: {self.kids}\n"
-                            f"7. Employment status: {self.employment}\n"
-                            f"8. Income: {self.income}\n"
-                            f"9. Expenses: {self.expenses}\n"
-                            f"10. Loan amount: {self.loan_amount}\n"
-                            f"11. Monthly payment: {self.monthly_payment}\n"
-                            "12. Confirm details\n"
-                            "-------------------------------------")
-                        change = input("Please enter the number of the row that"
-                                    " needs to be updated:\n")
-                        if change == '1':
-                            self.change_name()
-                        elif change == '2':
-                            self.change_email()
-                        elif change == "3":
-                            self.change_phone()
-                        elif change == "4":
-                            self.change_age()
-                        elif change == "5":
-                            self.change_marital_status()
-                        elif change == "6":
-                            self.change_kids()
-                        elif change == "7":
-                            self.change_employment_status()
-                        elif change == "8":
-                            self.change_income()
-                        elif change == "9":
-                            self.change_expense()
-                        elif change == "10":
-                            self.change_loan()
-                        elif change == "11":
-                            self.change_monthly_payment()
-                        elif change == "12":
-                            break
-                        else:
-                            print("Number out of range.")
+                            print(f"1. Name: {self.name}\n"
+                                f"2. Email: {self.email}\n"
+                                f"3. Phone: {self.phone}\n"
+                                f"4. Age: {self.age}\n"
+                                f"5. Marital status: {self.marital_status}\n"
+                                f"6. Kids: {self.kids}\n"
+                                f"7. Employment status: {self.employment}\n"
+                                f"8. Income: {self.income}\n"
+                                f"9. Expenses: {self.expenses}\n"
+                                f"10. Loan amount: {self.loan_amount}\n"
+                                f"11. Monthly payment: {self.monthly_payment}\n"
+                                "12. Confirm details\n"
+                                "-------------------------------------")
+                            change = input("Please enter the number of the row that"
+                                        " needs to be updated:\n")
+                            if change == '1':
+                                self.change_name()
+                            elif change == '2':
+                                self.change_email()
+                            elif change == "3":
+                                self.change_phone()
+                            elif change == "4":
+                                self.change_age()
+                            elif change == "5":
+                                self.change_marital_status()
+                            elif change == "6":
+                                self.change_kids()
+                            elif change == "7":
+                                self.change_employment_status()
+                            elif change == "8":
+                                self.change_income()
+                            elif change == "9":
+                                self.change_expense()
+                            elif change == "10":
+                                self.change_loan()
+                            elif change == "11":
+                                self.change_monthly_payment()
+                            elif change == "12":
+                                break
+                            else:
+                                print("Number out of range.")
                     else:
-                        print("Please enter y or n.")
+                        answer = input("Please press enter to submit for review or n to make changes.")
         except (ValueError,IndexError) as e:
-            print(f"Wrong data was entered: {e}.") 
+                print(f"Wrong data was entered: {e}.") 
         return self.summary()
 
     def check_score_for_age(self):
