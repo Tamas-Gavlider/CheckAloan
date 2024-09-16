@@ -1,3 +1,9 @@
+import re
+
+# The applicant's details and application status will be stored in database
+# to avoid duplicate requests
+database = {}
+
 def welcome_message():
     """ Welcome message when the app starts
     Main menu of the app, user can either go to the application form or close the app
@@ -19,30 +25,58 @@ def welcome_message():
         else:
             choice = input("Please enter either 1 or 2:\n")
 
-
-# The applicant's details and application status will be stored in database
-# to avoid duplicate requests
-database = {}
-
-def applicant_details():
+def get_name():
     """
-    Getting the details from the applicant and validate inputs
+    Get the name of the user
     """
-    while True:
-        try:
+    try:
+        while True:
             name = input("Please provide your full name:\n")
-            if name.strip() == "" or len(name) < 5 or name[0] == " ":
-                print("Please enter a valid name.")
-            else: 
-                break
-        except IndexError as e:
-            print(f"Wong data was entered: {e}")
+            # Check for digits in name
+            name_check = re.findall('\\d', name)
+            if name.strip() == "":
+                print("The name field cannot be empty.")
+            elif len(name) < 5:
+                print("The name is too short.")
+            elif name_check:
+                print("Name cannot contain numbers.")
+            else:
+                break  # Exit loop if name is valid
+    except IndexError as e:
+        print(f"Wong data was entered: {e}")
+    return name
+                
+def get_email():
+    """
+    Get the contact email
+    """
     email = input("Please provide your contact email address:\n")
-    while "@" not in email or "." not in email:
-        email = input("Please enter a valid email address:\n")
+    regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+    while True:  
+        if re.fullmatch(regex, email) == None:  
+            print("The given mail is invalid")  
+            email = input("Please enter a valid email address:\n")
+        else:
+            break  
+    return email
+        
+def get_phone():
+    """
+    Get the contact phone number
+    """
     phone = input("Please provide your contact phone number:\n")
-    while len(phone) > 10 or len(phone) < 10:
-        phone = input("Please enter a valid phone number:\n")
+    pattern = re.compile(r'^\d{10}$')
+    while True:
+        if pattern.match(phone) == None:
+            phone = input("Please enter a valid phone number:\n")
+        else:
+            break
+    return phone
+        
+def get_age():
+    """
+    Get the age of the user
+    """
     while True:
         try:
             age = int(input("How old are you?:\n"))
@@ -60,28 +94,31 @@ def applicant_details():
                 return False
         except ValueError:
             print("Wrong data entered")
+    return age
+            
+def get_marital_status():
+    """
+    Get the marital status of the user
+    """
     while True:
         try:
              marital_status = input("What is your marital status(Married/Single)?:\n")
-             if marital_status.capitalize()[0] == "S":
+             if marital_status.upper() == "SINGLE":
                  marital_status = "Single"
                  break
-             elif marital_status.capitalize()[0] == "M":
+             elif marital_status.upper() == "MARRIED":
                  marital_status = "Married"
                  break
-             elif marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
-                    marital_status = input("Please enter either married or single:\n")
-                    if marital_status.capitalize()[0] == "M":
-                        marital_status = "Married"
-                        break
-                    elif marital_status.capitalize()[0] == "S":
-                        marital_status = "Single"
-                        break
-                    else:
-                        print("Wrong data provided.")
+             else:
+                 print("Please enter either married or single.")
         except IndexError:
             print("No data was entered.")
-    
+    return marital_status
+                        
+def get_kids():
+    """
+    Get the number of dependent kids
+    """
     while True:
         try:
             kids = int(input("Number of dependent kids:\n"))
@@ -90,9 +127,15 @@ def applicant_details():
             break
         except ValueError as e:
             print(f"{e} is not a valid number.")
+    return kids
+            
+def get_employment():
+    """
+    Get the employment status of the user
+    """
     while True:
         try:
-            employment = input("Are you employed?:\n")
+            employment = input("Are you employed? Please enter y or n: \n")
             if employment.capitalize()[0] == "Y":
                 employment = True
                 break
@@ -106,6 +149,12 @@ def applicant_details():
                 print("Please enter either yes or no!")
         except IndexError:
             print("No data was entered.")
+    return employment
+            
+def get_income():
+    """
+    Get the income of the user
+    """
     while True:
         try:
             income = int(input("Monthly income:\n"))
@@ -114,16 +163,26 @@ def applicant_details():
             break
         except ValueError:
             print("Incorrect data was entered.")
-    try:
-        expense = int(input(
-                "Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
-        while True:
+    return income
+            
+def get_expense():
+    """
+    Get the expenses of the user
+    """
+    while True:
+        try:
+            expense = int(input("Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
             while expense < 0:
                 expense = int(input("Expense cannot be a negative number.Please enter higher amount"))
-            
             break
-    except ValueError as e:
-        print(f"Incorrect data was entered: {e}")
+        except ValueError as e:
+            print(f"Incorrect data was entered: {e}")
+    return expense
+            
+def get_loan_amount():
+    """
+    Get the loan amount. Amount cannot be higher than 20000.
+    """
     while True:
         try:
             loan_amount = int(
@@ -150,6 +209,12 @@ def applicant_details():
                 break
         except (ValueError, IndexError) as e:
             print(f"Incorrect data was entered: {e}")
+    return loan_amount
+            
+def get_monthly_payment():
+    """
+    Monthly payment of the loan. Maximum loan length is 5 years so the loan/payment cannot be more than 60.
+    """
     while True:        
         try:
             monthly_payment = int(input("How much would you like to pay back monthly:\n"))
@@ -170,12 +235,30 @@ def applicant_details():
                 break
         except (ValueError, ZeroDivisionError) as e:
             print(f"Incorrect data was entered: {e}")
+    return monthly_payment
 
+
+def applicant_details():
+    """
+    Getting the details from the user
+    """    
+    name = get_name()
+    email = get_email()
+    phone = get_phone()
+    age = get_age()
+    marital_status = get_marital_status()
+    kids = get_kids()
+    employment = get_employment()
+    income = get_income()
+    expense = get_expense()
+    loan_amount = get_loan_amount()
+    monthly_payment = get_monthly_payment()
+    
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
 class Applicant:
     """
-    Necessary details of the applicant based on the loan eligibility will be
+    Necessary details of the user based on the loan eligibility will be
     decided. It calculates the score and interest rate based on the provided
     details.Either approve or reject the loan and add the user to the database
     """
@@ -556,5 +639,3 @@ def run_app():
         else:
             print("Application is closing...")
 
-
-run_app()
