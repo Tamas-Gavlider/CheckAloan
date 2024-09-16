@@ -123,8 +123,9 @@ def get_kids():
         try:
             kids = int(input("Number of dependent kids:\n"))
             if kids < 0:
-                kids = int("Number cannot be negative. Pleaser enter 0 or higher number:\n")
-            break
+                print("Number cannot be negative. Pleaser enter 0 or higher number.")
+            else:
+                break
         except ValueError as e:
             print(f"{e} is not a valid number.")
     return kids
