@@ -36,7 +36,7 @@ def applicant_details():
             else: 
                 break
         except IndexError as e:
-            print("No data was entered.")
+            print(f"Wong data was entered: {e}")
     email = input("Please provide your contact email address:\n")
     while "@" not in email or "." not in email:
         email = input("Please enter a valid email address:\n")
@@ -62,26 +62,29 @@ def applicant_details():
             print("Wrong data entered")
     while True:
         try:
-            marital_status = input("What is your marital status(Married/Single)?:\n")
-            while marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
+             marital_status = input("What is your marital status(Married/Single)?:\n")
+             if marital_status.capitalize()[0] != "M" and marital_status.capitalize()[0] != "S":
                     marital_status = input("Please enter either married or single:\n")
                     if marital_status.capitalize()[0] == "M":
                         marital_status = "Married"
                     elif marital_status.capitalize()[0] == "S":
-                        marital_status = "Single"
+                            marital_status = "Single"
                     else:
                         print("Wrong data provided.")
-            break
-        except IndexError as e:
+             
+             else:
+                 break
+        except IndexError:
             print("No data was entered.")
+    
     while True:
         try:
             kids = int(input("Number of dependent kids:\n"))
-            while kids < 0:
+            if kids < 0:
                 kids = int("Number cannot be negative. Pleaser enter 0 or higher number:\n")
             break
-        except ValueError:
-            print(f"Please enter a valid number.")
+        except ValueError as e:
+            print(f"{e} is not a valid number.")
     while True:
         try:
             employment = input("Are you employed?:\n")
@@ -106,15 +109,16 @@ def applicant_details():
             break
         except ValueError:
             print("Incorrect data was entered.")
-    while True:
-        try:
-            expense = int(input(
+    try:
+        expense = int(input(
                 "Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
+        while True:
             while expense < 0:
-                print("Expense cannot be a negative number.")
+                expense = int(input("Expense cannot be a negative number.Please enter higher amount"))
+            
             break
-        except ValueError as e:
-            print(f"Incorrect data was entered: {e}")
+    except ValueError as e:
+        print(f"Incorrect data was entered: {e}")
     while True:
         try:
             loan_amount = int(
@@ -270,6 +274,8 @@ class Applicant:
         """
         if self.employment is True:
             self.employment = False
+        else:
+            self.employment = True
 
     def change_income(self):
         """
@@ -277,17 +283,28 @@ class Applicant:
         """
         try:
             self.income = int(input("Enter the correct income amount:\n"))
-        except (ValueError, IndexError) as e:
+            while True:
+                if self.income <=0:
+                    self.income = int(input("Income cannot be less or equal to 0:\n"))
+                break
+        except (ValueError, IndexError,ZeroDivisionError) as e:
             print(f"Wrong data was entered: {e}")
 
     def change_expense(self):
         """
         Update expenses
         """
-        try:
-            self.expenses = int(input("Enter the monthly expenses:\n"))
-        except (ValueError, IndexError) as e:
-            print(f"Wrong data was entered: {e}")
+        while True:
+            try:
+                self.expenses = int(input("Enter the monthly expenses:\n"))
+                if self.expenses <=0: 
+                    print("The expense cannot be less or equal to 0.")
+                elif self.expenses > self.income:
+                    print("The expense cannot be higher than the income.")
+                else: 
+                    break
+            except (ValueError, IndexError,ZeroDivisionError) as e:
+                print(f"Wrong data was entered: {e}")
 
     def change_loan(self):
         """
@@ -297,10 +314,9 @@ class Applicant:
             try:
                 self.loan_amount = int(input("Correct loan amount:\n"))
                 if self.loan_amount > 20000:
-                    self.loan_amount = int(input("The maximum amount is 20000. Please do not enter higher amount:\n"))
+                    print("The maximum amount is 20000. Please do not enter higher amount.")
                 elif self.loan_amount < self.monthly_payment:
-                    self.loan_amount = int(input("The loan amount is less than the monthly payment."
-                                                            "Enter higher amount:\n"))
+                    print("The loan amount is less than the monthly payment.")
                 else:
                     break
             except (ValueError, IndexError) as e:
@@ -312,9 +328,8 @@ class Applicant:
         Update the monthly payment
         """
         while True:
-            self.monthly_payment = int(
-            input("Enter the updated estimated monthly payment:\n"))
             try:
+                self.monthly_payment = int(input("Enter the updated estimated monthly payment:\n"))
                 if self.loan_amount/self.monthly_payment > 60:
                     print("Sorry the loan lenght exceeds the maximum of 60 months.")
                 elif self.loan_amount < self.monthly_payment:
@@ -454,11 +469,11 @@ class Applicant:
         """
         Score/Interest for employment status
         """
-        if self.employment:
-            self.score += 30
-            self.interest_rate += 0.01
-        else:
+        if self.employment is False:
             self.score -= 130
+        else:
+            self.score += 130
+            self.interest_rate += 0.01
         return self.score, self.interest_rate
 
     def calculate_monthly_payment(self):
