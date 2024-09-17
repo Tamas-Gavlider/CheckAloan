@@ -42,6 +42,11 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
 
 The features, scoring system,interest rate increase and criteria for the app were initially created in [excel](/docs/roadmap.xlsx).
 
+To help visualize the structure and logic of the code, I have created a flowchart that outlines the main components and their interactions. 
+
+The scoring and interest rate system can be found in the Excel sheet.
+![flowchart](docs/flowchart.png)
+
 ## Testing
 
 ### Bugs
@@ -64,9 +69,38 @@ Steps for deployment:
 - Fork or clone the repository CheckAloan
 - Create a new Heroku app 
 - Set the buildbacks for **Python** and **NodeJS** in that order
+- You must then create a Config Var called PORT. Set this to 8000
 - Link the Heroku app to the repository
 - Click on <strong>Deploy</strong>
+
+### Local Development
+
+#### How to Fork
+
+To fork the CheckAloan repository:
+  - Log in (or sign up) to Github.
+  -  Go to the repository for this project, Tamas-Gavlider/CheckAloan.
+  - Click the Fork button in the top right corner.
+
+#### How to Clone
+
+To clone the CheckAloan repository:
+
+- Log in (or sign up) to Github.
+- Go to the repository for this project, Tamas-Gavlider/CheckAloan.
+- Click on the code button, select whether you would like to clone with HTTPS, SSH or GitHub CLI and copy the link shown.
+- Open the terminal in your code editor and change the current working directory to the location you want to use for the cloned directory.
+- Type 'git clone' into the terminal and then paste the link you copied in step 3. Press enter.
 
 ## Credits 
 
 Code Institute for the deployment terminal and Readme template.
+
+For unit testing, I utilized methods and examples from the following resources:
+- [andressa.dev](https://andressa.dev/2019-07-20-using-pach-to-test-inputs/) 
+- [sophieau.com](https://sophieau.com/article/python-in-out-err-mocking/) 
+These resources provided valuable insights into testing input handling and mocking techniques.
+
+For email validation, I referenced the following resource to implement more complex checks beyond just "@" and ".":
+- [javatpoint.com](https://www.javatpoint.com/how-to-validated-email-address-in-python-with-regular-expression.)
+This resource helped in applying regular expressions for robust email validation.
