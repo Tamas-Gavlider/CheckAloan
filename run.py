@@ -630,9 +630,10 @@ class Applicant:
         return database
     
     def check_duplicates(self):
-        for k,v in database.items():
-            if k == self.name and v == self.email:
-                return f"You already submitted an application and it was {self.decision}"
+        if self.name in database:
+            return True
+        else:
+            self.add_to_database()
           
 
 def run_app():
@@ -652,11 +653,15 @@ def run_app():
             applicant.calculate_monthly_payment()
             print("The application is being reviewed...")
             print("------------------------------------")
-            print(applicant.decision())
-            applicant.loan_details()
-            applicant.add_to_database()
-            print("------------------------------------")
-            print("You application have been saved.")
+            print(database)
+            if applicant.check_duplicates():
+                print(f"You have already applied for a loan and it was {applicant.decision()}")
+            else:
+                print(applicant.decision())
+                applicant.loan_details()
+                applicant.add_to_database()
+                print("------------------------------------")
+                print("You application have been saved.")
             print("------------------------------------")
             print("Thank you for choosing CheckAloan.")
             print("Returning to main menu.")
@@ -664,8 +669,3 @@ def run_app():
         else:
             print("Application is closing...")
 
-
-def check_duplicates(self):
-        for k,v in database.items():
-            if k == self.name and v == self.email:
-                return f"You already submitted an application and it was {self.decision}"
