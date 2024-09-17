@@ -13,10 +13,10 @@ def welcome_message():
           " Where you are not alone!")
     print("-------------------------")
     print("1. Fill out the loan application.")
-    print("2. Closed the application.")
+    print("2. Close the application.")
     print("-----------------------------------------------")
     choice = input("Please press 1 to start the loan application or 2 to quit:\n")
-    while choice != "1" or choice != "2":
+    while choice != "1" and choice != "2":
         if choice == "1":
             return True
         elif choice == "2":
@@ -31,7 +31,7 @@ def get_name():
     """
     try:
         while True:
-            name = input("Please provide your full name:\n")
+            name = input("Please enter your full name:\n")
             # Check for digits in name
             name_check = re.findall('\\d', name)
             if name.strip() == "":
@@ -43,18 +43,18 @@ def get_name():
             else:
                 break  # Exit loop if name is valid
     except IndexError as e:
-        print(f"Wong data was entered: {e}")
+        print(f"Wrong data was entered: {e}")
     return name
                 
 def get_email():
     """
-    Get the contact email
+    Get the contact phone number (10 digits)
     """
     email = input("Please provide your contact email address:\n")
     regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
     while True:  
         if re.fullmatch(regex, email) == None:  
-            print("The given mail is invalid")  
+            print("The email provided is invalid")  
             email = input("Please enter a valid email address:\n")
         else:
             break  
@@ -64,7 +64,7 @@ def get_phone():
     """
     Get the contact phone number
     """
-    phone = input("Please provide your contact phone number:\n")
+    phone = input("Please enter your 10-digit phone number:\n")
     pattern = re.compile(r'^\d{10}$')
     while True:
         if pattern.match(phone) == None:
@@ -81,7 +81,7 @@ def get_age():
         try:
             age = int(input("How old are you?:\n"))
             if age < 18:
-                print("You cannot apply for a loan. You must be at least 18 years old.\n"
+                print("You must be at least 18 years old to apply for a loan.\n"
                     "------------------------------------------------------------------\n"
                     "Application cancelled.")
                 return False
@@ -89,12 +89,12 @@ def get_age():
                 return age
                 break
             else:
-                print("Sorry you are too old to apply for a loan.\n"
+                print("Sorry, you are too old to apply for a loan..\n"
                     "-------------------------------------------\n"
                     "Application cancelled.")
                 return None
         except ValueError:
-            print("Wrong data entered")
+            print("Invalid input. Please enter a valid age.")
     
             
 def get_marital_status():
@@ -111,7 +111,7 @@ def get_marital_status():
                  marital_status = "Married"
                  break
              else:
-                 print("Please enter either married or single.")
+                 print("Please enter either 'Married' or 'Single'.")
         except IndexError:
             print("No data was entered.")
     return marital_status
@@ -124,7 +124,7 @@ def get_kids():
         try:
             kids = int(input("Number of dependent kids:\n"))
             if kids < 0:
-                print("Number cannot be negative. Pleaser enter 0 or higher number.")
+                print("The number of kids cannot be negative. Pleaser enter 0 or a higher number.")
             else:
                 break
         except ValueError as e:
@@ -137,14 +137,14 @@ def get_employment():
     """
     while True:
         try:
-            employment = input("Are you employed? Please enter y or n: \n")
+            employment = input("Are you employed? Please enter 'y' for yes or 'n' for no:\n")
             if employment.capitalize()[0] == "Y":
                 employment = True
                 return employment
                 break
             elif employment.capitalize()[0] == "N":
                 employment = False
-                print("Sorry we cannot offer any loan if you are not employed\n"
+                print("Sorry, we cannot offer a loan if you are not employed.\n"
                       "-------------------------------------------------------\n"
                       "Application cancelled.")
                 return False
@@ -160,9 +160,9 @@ def get_income():
     """
     while True:
         try:
-            income = int(input("Monthly income:\n"))
+            income = int(input("Please provide your monthly income:\n"))
             while income < 0:
-                income = int("Number cannot be negative. Pleaser enter 0 or higher number:\n")
+                income = int("Income cannot be negative. Please enter a valid amount:\n")
             break
         except ValueError:
             print("Incorrect data was entered.")
@@ -171,15 +171,15 @@ def get_income():
 
 def get_expense(income):
     """
-    Get the expenses of the user
+    Monthly expenses including rent, utilities, food, and debt payments
     """
     while True:
         try:
             expense = int(input("Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
             if expense < 0:
-                expense = int(input("Expense cannot be a negative number.Please enter higher amount:\n"))
+                expense = int(input("Expenses cannot be negative. Please enter a valid amount:\n"))
             elif expense > income:
-                print("Your expenses exceeded the income. Loan request is being rejected")
+                print("Your expenses exceed your income. Loan request rejected.")
                 return None
             else:
                 return expense
@@ -191,16 +191,16 @@ def get_expense(income):
          
 def get_loan_amount():
     """
-    Get the loan amount. Amount cannot be higher than 20000.
+    Get the loan amount. Loan amount cannot exceed 20 000..
     """
     while True:
         try:
             loan_amount = int(
-            input("How much money would you like to borrow?:\n"))
+            input("How much would you like to borrow?\n"))
             if loan_amount > 20000:
                 answer = input(
-                            "Sorry the request amount is too high. The maximum amount is 20000. Would you "
-                            "like to proceed with the max amount? yes/no:\n")
+                            "Would you like to proceed with the maximum amount of 20 000?" 
+                            "Enter 'yes' or 'no':\n")
                 if answer.capitalize()[0] == "N":
                     print("-------------------------------------------")
                     print("Application cancelled!")
@@ -232,7 +232,7 @@ def get_monthly_payment(loan_amount):
             monthly_payment = int(input("How much would you like to pay back monthly:\n"))
             if loan_amount/monthly_payment > 60:
                 print("-------------------------------------------------")
-                print("Sorry the maximum length of the loan is 5 years.")
+                print("Sorry, the maximum loan term is 5 years.")
                 print("-------------------------------------------------")
                 print("Based on the entered details the loan length"
                             f" is {round(loan_amount/monthly_payment)}")
@@ -240,9 +240,9 @@ def get_monthly_payment(loan_amount):
                 print("Please enter higher monthly payment.")
                 print("-------------------------------------------------")
             elif loan_amount < monthly_payment:
-                print("The monthly payment cannot be higher than the loan amount. Monthly payment must be less.")
+                print("The monthly payment cannot exceed the loan amount. Monthly payment must be less.")
             elif monthly_payment <=0 :
-                print("The monthly payment cannot be less or equal to 0.")
+                print("The monthly payment must be greater than 0.")
             else:
                 return monthly_payment
                 break
