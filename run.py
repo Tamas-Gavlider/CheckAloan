@@ -16,7 +16,7 @@ def welcome_message():
     print("2. Close the application.")
     print("-----------------------------------------------")
     choice = input("Please press 1 to start the loan application or 2 to quit:\n")
-    while choice != "1" and choice != "2":
+    while choice != "1" or choice != "2":
         if choice == "1":
             return True
         elif choice == "2":
@@ -177,7 +177,7 @@ def get_expense(income):
         try:
             expense = int(input("Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
             if expense < 0:
-                expense = int(input("Expenses cannot be negative. Please enter a valid amount:\n"))
+                print("Expenses cannot be negative.")
             elif expense > income:
                 print("Your expenses exceed your income. Loan request rejected.")
                 return None
@@ -259,7 +259,7 @@ def applicant_details():
         phone = get_phone()
         age = get_age()
         if not age:
-            break  # Exit if age is invalid (e.g., under 18 or over 65)
+            break  # Exit if age is under 18 or over 65)
         marital_status = get_marital_status()
         kids = get_kids()
         employment = get_employment()
@@ -299,8 +299,8 @@ class Applicant:
         self.expenses = expenses
         self.loan_amount = loan_amount
         self.monthly_payment = monthly_payment
-        self.score = 0
-        self.interest_rate = 1
+        self.score = 0 # Max score is 130, under 50 the application will be rejected
+        self.interest_rate = 1 # Interest rate depends on user details, calculated after the approval
 
     def summary(self):
         """
@@ -669,3 +669,4 @@ def run_app():
         else:
             print("Application is closing...")
 
+run_app()
