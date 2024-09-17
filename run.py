@@ -53,7 +53,7 @@ def get_email():
     email = input("Please provide your contact email address:\n")
     regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
     while True:  
-        if re.fullmatch(regex, email) == None:  
+        if re.fullmatch(regex, email) is None:  
             print("The email provided is invalid")  
             email = input("Please enter a valid email address:\n")
         else:
@@ -67,7 +67,7 @@ def get_phone():
     phone = input("Please enter your 10-digit phone number:\n")
     pattern = re.compile(r'^\d{10}$')
     while True:
-        if pattern.match(phone) == None:
+        if pattern.match(phone) is None:
             phone = input("Please enter a valid phone number:\n")
         else:
             break
@@ -116,20 +116,20 @@ def get_marital_status():
             print("No data was entered.")
     return marital_status
                         
-def get_kids():
+def get_dependent_children():
     """
     Get the number of dependent kids
     """
     while True:
         try:
-            kids = int(input("Number of dependent kids:\n"))
-            if kids < 0:
+            children = int(input("Number of dependent kids:\n"))
+            if children < 0:
                 print("The number of kids cannot be negative. Pleaser enter 0 or a higher number.")
             else:
                 break
         except ValueError as e:
             print(f"{e} is not a valid number.")
-    return kids
+    return children
             
 def get_employment():
     """
@@ -156,7 +156,7 @@ def get_employment():
             
 def get_income():
     """
-    Get the income of the user
+    Get the income of the user.
     """
     while True:
         try:
@@ -183,12 +183,9 @@ def get_expense(income):
                 return None
             else:
                 return expense
-                break
         except ValueError as e:
             print(f"Incorrect data was entered: {e}")
-    
- 
-         
+
 def get_loan_amount():
     """
     Get the loan amount. Loan amount cannot exceed 20 000..
@@ -261,7 +258,7 @@ def applicant_details():
         if not age:
             break  # Exit if age is under 18 or over 65)
         marital_status = get_marital_status()
-        kids = get_kids()
+        kids = get_dependent_children()
         employment = get_employment()
         if not employment:
             break  # Exit if not employed
@@ -285,8 +282,8 @@ class Applicant:
     def __init__(self, name, email, phone, age, marital_status, kids,
                  employment, income, expenses, loan_amount, monthly_payment):
         """
-        General contact details and important details which needed to make
-        decision. Score and interest rate have values.
+        General contact details and important details needed to make a decision.
+        Score and interest rate have values. These will be modified based on the provided details.
         """
         self.name = name
         self.email = email
@@ -312,50 +309,37 @@ class Applicant:
                 f"Phone number: {self.phone}\n"
                 f"Age: {self.age}\n"
                 f"Marital status: {self.marital_status}\n"
-                f"Kids: {self.kids}\n"
+                f"Number of kids: {self.kids}\n"
                 f"Employment status: {self.employment}\n"
                 f"Monthly income: {self.income}\n"
                 f"Monthly expense: {self.expenses}\n"
                 f"Loan amount: {self.loan_amount}\n"
                 f"Monthly payment: {self.monthly_payment}\n"
                 "-------------------------------------------")
-
+ 
     def change_name(self):
         """
         Update the name
         """
-        self.name = input("Please enter the correct name:\n")
-        while self.name == "" or len(self.name) < 5:
-            self.name = input("Please enter a valid name:\n")
-        
+        self. name = get_name()
 
     def change_email(self):
         """
         Update the email address
         """
-        self.email = input("Enter the correct email address:\n")
-        while "@" not in self.email and "." not in self.email:
-             self.email = input("Please enter a valid email address:\n")
+        self.email = get_email()
             
     def change_phone(self):
         """
         Update the phone number
         """
-        self.phone = input("Enter the correct phone number:\n")
-        while len(self.phone) != 10:
-            self.phone = input("Please enter a valid phone number:\n")
+        self.phone = get_phone()
 
     def change_age(self):
         """
         Update the age
         """
-        try:
-            self.age = int(input("Enter your correct age:\n"))
-            if self.age < 18:
-                print("Sorry we cannot approve the credit if you are under 18.")
-                return False
-        except (ValueError, IndexError) as e:
-            print(f"Wrong data was entered: {e}")
+        self.age = get_age()
 
     def change_marital_status(self):
         """
@@ -370,10 +354,8 @@ class Applicant:
         """
         Update the number of dependent kids
         """
-        try:
-            self.kids = int(input("Please enter the number of dependent kids:\n"))
-        except ValueError as e:
-            print(f"Wrong data was entered: {e}")
+        self.kids = get_dependent_children()
+
 
     def change_employment_status(self):
         """
@@ -383,6 +365,7 @@ class Applicant:
             self.employment = False
         else:
             self.employment = True
+        
 
     def change_income(self):
         """
@@ -430,6 +413,9 @@ class Applicant:
                     print("The maximum amount is 20000. Please do not enter higher amount.")
                 elif self.loan_amount <= self.monthly_payment:
                     print("The loan amount is less than or equal to the monthly payment.")
+                elif self.loan_amount/self.monthly_payment > 60:
+                    self.monthly_payment = round(self.loan_amount/60)
+                    break
                 else:
                     break
             except (ValueError, IndexError) as e:
@@ -481,8 +467,7 @@ class Applicant:
                                 f"11. Monthly payment: {self.monthly_payment}\n"
                                 "12. Confirm details\n"
                                 "-------------------------------------")
-                            change = input("Please enter the number of the row that"
-                                        " needs to be updated:\n")
+                            change = input("Please enter the number of the field that needs to be updated:\n")
                             if change == '1':
                                 self.change_name()
                             elif change == '2':
@@ -579,7 +564,7 @@ class Applicant:
             self.interest_rate += 0.03
         return self.score, self.interest_rate
 
-    def employment_status(self):
+    def check_score_for_employment_status(self):
         """
         Score/Interest for employment status
         """
@@ -619,7 +604,7 @@ class Applicant:
 
     def add_to_database(self):
         """
-        Add the applicant's email to database as key and 
+        Add the applicant's name to the database as the key
         the most important details of the application as values
         """
         database[self.name] = {'Email': self.email, 'Score': self.score,
@@ -645,26 +630,26 @@ def run_app():
             print(applicant.summary())
             print(applicant.make_changes())
             print(applicant.summary())
-            applicant.employment_status()
+            applicant.check_score_for_employment_status()
             applicant.check_score_for_age()
             applicant.check_score_for_cash_flow()
             applicant.check_score_for_kids()
             applicant.check_score_for_marital_status()
             applicant.calculate_monthly_payment()
-            print("The application is being reviewed...")
+            print("The application is being reviewed.")
             print("------------------------------------")
             print(database)
             if applicant.check_duplicates():
-                print(f"You have already applied for a loan and it was {applicant.decision()}")
+                print(f"You have already applied for a loan, and it was {applicant.decision()}.")
             else:
                 print(applicant.decision())
                 applicant.loan_details()
                 applicant.add_to_database()
                 print("------------------------------------")
-                print("You application have been saved.")
+                print("Your application has been saved.")
             print("------------------------------------")
             print("Thank you for choosing CheckAloan.")
-            print("Returning to main menu.")
+            print("Returning to the main menu.")
             print("------------------------------------")
         else:
             print("Application is closing...")
