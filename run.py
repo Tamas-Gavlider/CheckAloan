@@ -147,7 +147,7 @@ def get_employment():
                       "Application cancelled.")
                 return False
             else:
-                print("Please enter either yes or no!")
+                print("Please enter either y or n!")
         except IndexError:
             print("No data was entered.")
     return employment
@@ -165,7 +165,8 @@ def get_income():
         except ValueError:
             print("Incorrect data was entered.")
     return income
-            
+
+
 def get_expense():
     """
     Get the expenses of the user
@@ -174,12 +175,13 @@ def get_expense():
         try:
             expense = int(input("Monthly expenses including rent, utilities, food, pet care and debt payments:\n"))
             while expense < 0:
-                expense = int(input("Expense cannot be a negative number.Please enter higher amount"))
+                expense = int(input("Expense cannot be a negative number.Please enter higher amount:\n"))
             break
         except ValueError as e:
             print(f"Incorrect data was entered: {e}")
     return expense
-            
+ 
+         
 def get_loan_amount():
     """
     Get the loan amount. Amount cannot be higher than 20000.
@@ -191,7 +193,7 @@ def get_loan_amount():
             if loan_amount > 20000:
                 answer = input(
                             "Sorry the request amount is too high. The maximum amount is 20000. Would you "
-                            "like to proceed with the max amount? y/n:\n")
+                            "like to proceed with the max amount? yes/no:\n")
                 if answer.capitalize()[0] == "N":
                     print("-------------------------------------------")
                     print("Application cancelled!")
@@ -211,8 +213,8 @@ def get_loan_amount():
         except (ValueError, IndexError) as e:
             print(f"Incorrect data was entered: {e}")
     return loan_amount
-            
-def get_monthly_payment():
+
+def get_monthly_payment(loan_amount):
     """
     Monthly payment of the loan. Maximum loan length is 5 years so the loan/payment cannot be more than 60.
     """
@@ -238,7 +240,6 @@ def get_monthly_payment():
             print(f"Incorrect data was entered: {e}")
     return monthly_payment
 
-
 def applicant_details():
     """
     Getting the details from the user
@@ -253,8 +254,7 @@ def applicant_details():
     income = get_income()
     expense = get_expense()
     loan_amount = get_loan_amount()
-    monthly_payment = get_monthly_payment()
-    
+    monthly_payment = get_monthly_payment(loan_amount)
     return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
 class Applicant:
@@ -639,4 +639,3 @@ def run_app():
             print("------------------------------------")
         else:
             print("Application is closing...")
-
