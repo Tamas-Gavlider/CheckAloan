@@ -89,7 +89,7 @@ def get_age():
                 print("You must be at least 18 years old to apply for a loan.\n"
                     "------------------------------------------------------------------\n"
                     "Application cancelled.")
-                return False
+                return None
             elif age > 18 and age < 65:
                 return age
                 break
@@ -469,20 +469,22 @@ class Applicant:
         """
         Update income
         """
-        
-        try:
-            self.income = int(input("Enter the correct income amount:\n"))
-            while True:
-                if self.income <=0:
-                    print(("Income cannot be less or equal to 0:\n"))
-                    self.income = int(input("Enter higher amount:\n"))
-                elif self.income <= self.expenses:
-                    print("Income cannot be less than the monthly expenses.")
-                    self.income = int(input("Enter higher amount:\n"))
-                else:
-                    break
-        except (ValueError, IndexError,ZeroDivisionError) as e:
-            print(f"Wrong data was entered: {e}")
+        while True:
+                self.income = input("Please enter the income amount:\n")
+                if not self.income.strip():
+                   print("Na data entered. Please enter a valid number.")
+                   continue
+                try:
+                    self.income = int(self.income)
+                    if self.income <=0:
+                            print(("Income cannot be less or equal to 0:\n"))
+                    elif self.income < self.expenses:
+                        print("Income cannot be less than the monthly expenses.")
+                        self.income = int(input("Enter higher amount:\n"))
+                    else:
+                        break
+                except (ValueError, IndexError,ZeroDivisionError) as e:
+                        print(f"Wrong data was entered: {e}")
 
     def change_expense(self):
         """
