@@ -24,8 +24,10 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
  - Accepts user inputs.
  - Add the user's data to the database after the final decision
  - Input validation and error-checking
-    - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.
-    - String inputs like name and phone must meet a minimum or exact length requirement.
+    - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.<br>
+    ![Welcome screen](/docs/screenshots/main-menu.gif)
+    - String inputs like name,email and phone must meet specific requirements.<br>
+    
     - A robust email validation method was used for email input.
     - Integer inputs will raise an error if 0,a string or no data is entered.
     - If the input for age is less than 19, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
