@@ -383,10 +383,9 @@ class Applicant:
                 try:
                     self.income = int(self.income)
                     if self.income <=0:
-                            print(("Income cannot be less or equal to 0:\n"))
+                        print(("Income cannot be less or equal to 0:\n"))
                     elif self.income < self.expenses:
                         print("Income cannot be less than the monthly expenses.")
-                        self.income = int(input("Enter higher amount:\n"))
                     else:
                         break
                 except (ValueError, IndexError,ZeroDivisionError) as e:
