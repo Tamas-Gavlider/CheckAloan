@@ -6,6 +6,8 @@ from io import StringIO
 # The applicant's details and application status will be stored in database
 # to avoid duplicate requests
 database = {}
+#Key in the database
+application_id = 1
 
 def welcome_message():
     """ Welcome message when the app starts
@@ -395,7 +397,6 @@ class Applicant:
         self.monthly_payment = monthly_payment
         self.score = 0 # Max score is 130, under 50 the application will be rejected
         self.interest_rate = 1 # Interest rate depends on user details, calculated after the approval
-
     def summary(self):
         """
         Summary of the provided details
@@ -544,9 +545,10 @@ class Applicant:
         print("-------------------------------------------\n")
    
         try:
-            answer = input("The above details are correct? y/n:\n")
+            answer = input("The above details are correct? Press enter to submit your details  or 'n'"
+                           " to make changes:\n")
             while True:
-                    if answer.capitalize()[0] == "" or answer.capitalize()[0] == "Y":
+                    if answer.capitalize()[0] == "":
                         print("Thank you for the confirmation. Now we are checking"
                                 " if you are eligible for a loan...")
                         break
@@ -704,19 +706,26 @@ class Applicant:
         Add the applicant's name to the database as the key
         the most important details of the application as values
         """
-        database[self.name] = {'Email': self.email, 'Score': self.score,
-                               'Loan amount': self.loan_amount,
-                               "Monthly payment": self.monthly_payment *
-                               self.interest_rate,
+        global database, application_id
+        database[application_id] = { "Name": self.name.upper(), "Email": self.email.upper(), "Score": self.score,
+                               "Loan amount": self.loan_amount,
+                               "Monthly payment": round(self.monthly_payment *
+                               self.interest_rate),
                                "Application": self.decision()}
+        application_id += 1
         return database
     
     def check_duplicates(self):
-        if self.name in database and database[self.name]["Email"] == self.email:
-            print(database[self.name])
-            return True
-        else:
-            self.add_to_database()
+        global database
+        for applicant_id, applicant in database.items():
+            if applicant["Email"] == self.email.upper() and applicant["Name"] == self.name.upper():
+                print(f"You have already applied for a loan, and it was {applicant['Application']}.\n"
+                      f"{applicant}")
+                return True
+            
+            else:
+                self.add_to_database()
+                return False
           
 
 def run_app():
@@ -738,7 +747,6 @@ def run_app():
             print("------------------------------------")
             if applicant.check_duplicates():
                 print("------------------------------------")
-                print(f"You have already applied for a loan, and it was {database[applicant.name]["Application"]}.")
             else:
                 print(applicant.decision())
                 applicant.loan_details()
@@ -749,7 +757,6 @@ def run_app():
             print("Thank you for choosing CheckAloan.")
             print("Returning to the main menu.")
             print("------------------------------------")
-            print(database)
         else:
             print("Application is closing...")
 
