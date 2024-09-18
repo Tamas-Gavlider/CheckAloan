@@ -26,7 +26,7 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
  - Input validation and error-checking
     - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.
     - String inputs like name and phone must meet a minimum or exact length requirement.
-    - The email input must contain "@" and ".".
+    - A robust email validation method was used for email input.
     - Integer inputs will raise an error if 0,a string or no data is entered.
     - If the input for age is less than 19, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
@@ -97,8 +97,9 @@ To clone the CheckAloan repository:
 Code Institute for the deployment terminal and Readme template.
 
 For unit testing, I utilized methods and examples from the following resources:
-- [andressa.dev](https://andressa.dev/2019-07-20-using-pach-to-test-inputs/) 
-- [sophieau.com](https://sophieau.com/article/python-in-out-err-mocking/) 
+  - [andressa.dev](https://andressa.dev/2019-07-20-using-pach-to-test-inputs/) 
+  - [sophieau.com](https://sophieau.com/article/python-in-out-err-mocking/)<br>
+
 These resources provided valuable insights into testing input handling and mocking techniques.
 
 For email validation, I referenced the following resource to implement more complex checks beyond just "@" and ".":

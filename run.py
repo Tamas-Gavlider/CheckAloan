@@ -366,8 +366,8 @@ class Test(unittest.TestCase):
          self.assertEqual(monthly_payment,5000)
    
     
-if __name__ == '__main__':
-    unittest.main()
+#if __name__ == '__main__':
+ #   unittest.main()
 
 class Applicant:
     """
@@ -682,19 +682,19 @@ class Applicant:
         """
         Check the applicant score and approved/reject the loan request
         """
-        return "Approved" if self.score > 50 else "Rejected"
+        return "APPROVED" if self.score > 50 else "REJECTED"
 
     def loan_details(self):
         """
         Loan details for approved applications
         """
-        if self.decision() == "Approved":
+        if self.decision() == "APPROVED":
             print("------------------------------------\n"
                   f" The approved loan amount is {self.loan_amount}\n"
                   f" The interest rate is {round((self.interest_rate-1)*100)}%\n"
                   f" The monthly payment is {round(self.monthly_payment*self.interest_rate)}\n"
                   "------------------------------------")
-        else:
+        elif self.decision() == "REJECTED":
             print("Unfortunately, your loan request cannot be approved based on the provided details.\n"
                   f"You have reached {self.score} points based on the provided details.\n"
                   "It is not sufficient for the loan approval.")
@@ -712,7 +712,8 @@ class Applicant:
         return database
     
     def check_duplicates(self):
-        if self.name in database:
+        if self.name in database and database[self.name]["Email"] == self.email:
+            print(database[self.name])
             return True
         else:
             self.add_to_database()
@@ -735,9 +736,9 @@ def run_app():
             applicant.calculate_monthly_payment()
             print("The application is being reviewed.")
             print("------------------------------------")
-            print(database)
             if applicant.check_duplicates():
-                print(f"You have already applied for a loan, and it was {applicant.decision()}.")
+                print("------------------------------------")
+                print(f"You have already applied for a loan, and it was {database[applicant.name]["Application"]}.")
             else:
                 print(applicant.decision())
                 applicant.loan_details()
@@ -748,6 +749,8 @@ def run_app():
             print("Thank you for choosing CheckAloan.")
             print("Returning to the main menu.")
             print("------------------------------------")
+            print(database)
         else:
             print("Application is closing...")
 
+run_app()
