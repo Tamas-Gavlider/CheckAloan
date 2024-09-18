@@ -4,7 +4,7 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
 
 [Here is the live version of my project](https://checkaloan-cdfe97fe02ce.herokuapp.com/)
 
-![AmIResponsive](docs/am-i-responsive.png)
+![AmIResponsive](docs/screenshots/am-i-responsive.png)
 ## How to use
 
 - The user provides personal and financial details such as income, expenses, age, marital status, etc.
@@ -25,13 +25,19 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
  - Add the user's data to the database after the final decision
  - Input validation and error-checking
     - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.<br>
-    ![Welcome screen](/docs/screenshots/main-menu.gif)
+    ![Welcome screen](/docs/gif/main-menu.gif)
     - String inputs like name and phone must meet minimum/maximum length requirements.<br>
-      - Name validation<br>![Name-GIF](/docs/screenshots/name-input-validation.gif)
-      - Phone number validation<br>![Phone-GIF](/docs/screenshots/phone-input-validation.gif)
-    - A robust email validation method was used for email input.<br>![Email-GIF](/docs/screenshots/email-input-validation.gif.gif)
-    - Integer inputs will raise an error if 0,a string or no data is entered.
-    - If the input for age is less than 18, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
+      - Name validation<br>![Name-GIF](/docs/gif/name-input-validation.gif)
+      - Phone number validation<br>![Phone-GIF](/docs/gif/phone-input-validation.gif)
+      - Marital status validation<br>![Marital-status-GIF](/docs/gif/marital-status-input-validation.gif)
+    - A robust email validation method was used for email input.<br>![Email-GIF](/docs/gif/email-input-validation.gif.gif)
+    - Integer inputs will raise an error if 0, a string or no data is entered.
+        - Number of dependent children<br>![Number-of-kids-GIF](/docs/gif/number-of-kids.gif)
+        - Income/Expense validation<br>![Income-expense-GIF](/docs/gif/income-expense-validation.gif)
+    - If the input for age is less than 18 or more than 65, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
+        - Age between 18 - 65<br>![Age-gif](/docs/gif/age-input-validation.gif)
+        - Age under 18<br>![Age-under-18](/docs/screenshots/age-under-18.png)
+        - Age over 65<br>![Age-over-65](/docs/screenshots/age-over-65.png)
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
     - The monthly payment cannot exceed the loan amount. The user will be asked to adjust<br> the monthly payment.
 - Data maintaned in class instances. Except the welcome_message and applicant_details functions.<br> Those are handled outside of the class.
