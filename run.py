@@ -304,7 +304,7 @@ class Applicant:
         Summary of the provided details
         """
         return ("---------------------------------------------------\n"
-                f"Name: {self.name}!\n"
+                f"Name: {self.name}\n"
                 f"Email: {self.email}\n"
                 f"Phone number: {self.phone}\n"
                 f"Age: {self.age}\n"
