@@ -7,8 +7,7 @@ MIN_SCORE = 70
 MAX_LOAN = 20000
 # Max loan repayment length in months
 MAX_LOAN_DURATION = 60
-# The applicant's details and application status will be stored in database
-# to avoid duplicate requests
+# The applicant's details and application status will be stored to avoid duplicate requests
 database = {}
 #Key in the database
 application_id = 1
