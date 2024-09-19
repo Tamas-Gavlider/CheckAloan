@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
     # Test for invalid phone number
     @patch("builtins.input", side_effect = ["twentyfive","    ","33","1234567890"])
     @patch("sys.stdout", new_callable=StringIO)
-    def test_get_phone(self,mock_stdout,mock_input):
+    def test_get_phone_invalid_input(self,mock_stdout,mock_input):
         phone = get_phone()
         output = mock_stdout.getvalue()
         self.assertEqual(phone,"1234567890")
@@ -50,11 +50,17 @@ class Test(unittest.TestCase):
         age = get_age()
         self.assertEqual(age,30)
         
-    # Test age < 18 or age > 65
-    @patch("builtins.input", side_effect = [17,67])
-    def test_get_age_under_18_over_65(self,mock_input):
+    # Test age if age > 65
+    @patch("builtins.input", return_value = 67)
+    def test_get_age_over_65(self,mock_input):
         age = get_age()
         self.assertEqual(age,False)
+    # Test age if age < 18
+    @patch("builtins.input", return_value = 17)
+    def test_get_age_under_18(self,mock_input):
+        age = get_age()
+        self.assertEqual(age,False)
+        
         
     # Test age for string and no inputs
     @patch("builtins.input", side_effect = ["twentyfive","","33"])
