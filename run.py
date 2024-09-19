@@ -666,5 +666,4 @@ def run_app():
         else:
             print("Application is closing...")
 
-run_app()
-print(database)
+

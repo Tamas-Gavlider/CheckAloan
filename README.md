@@ -108,6 +108,7 @@ Code Institute for the deployment terminal and Readme template.
 For unit testing, I utilized methods and examples from the following resources:
   - [andressa.dev](https://andressa.dev/2019-07-20-using-pach-to-test-inputs/) 
   - [sophieau.com](https://sophieau.com/article/python-in-out-err-mocking/)<br>
+  - [python.org](https://docs.python.org/3/library/unittest.mock.html)<br>
 
 These resources provided valuable insights into testing input handling and mocking techniques.
 
