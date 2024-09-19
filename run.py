@@ -1,5 +1,6 @@
 import re
-from colorama import Fore, Back, Style, init
+from colorama import Fore, Style
+from tabulate import tabulate
 
 
 # Constants variable
@@ -316,19 +317,19 @@ class Applicant:
         """
         Summary of the provided details
         """
-        return (standard_style() + "---------------------------------------------------\n"
-                f"Name: {self.name}\n"
-                f"Email: {self.email}\n"
-                f"Phone number: {self.phone}\n"
-                f"Age: {self.age}\n"
-                f"Marital status: {self.marital_status}\n"
-                f"Number of kids: {self.kids}\n"
-                f"Employment status: {self.employment}\n"
-                f"Monthly income: {self.income}\n"
-                f"Monthly expense: {self.expenses}\n"
-                f"Loan amount: {self.loan_amount}\n"
-                f"Monthly payment: {self.monthly_payment}\n"
-                "-------------------------------------------")
+        print(tabulate([
+                ["Name:",self.name],
+                ["Email:",self.email],
+                ["Phone number:", self.phone],
+                ["Age:",self.age],
+                ["Marital status:", self.marital_status],
+                ["Number of kids:" ,self.kids],
+                ["Employment status:", self.employment],
+                ["Monthly income:" ,self.income],
+                ["Monthly expense:", self.expenses],
+                ["Loan amount:" ,self.loan_amount],
+                ["Monthly payment:", self.monthly_payment]
+                ],  tablefmt="github"))
  
     def change_name(self):
         """
@@ -662,9 +663,8 @@ def run_app():
         user = applicant_details()
         if user:
             applicant = Applicant(*user)
-            print(applicant.summary())
-            print(applicant.make_changes())
-            print(applicant.summary())
+            applicant.summary()
+            applicant.make_changes()
             applicant.calculate_score_and_interest()
             applicant.calculate_monthly_payment()
             print("The application is being reviewed.")
