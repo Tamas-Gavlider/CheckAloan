@@ -1,6 +1,12 @@
 import re
 
-
+# Constants variable
+# Miminum score for the application to be approved
+MIN_SCORE = 70
+# Max loan amount
+MAX_LOAN = 20000
+# Max loan repayment length in months
+MAX_LOAN_DURATION = 60
 # The applicant's details and application status will be stored in database
 # to avoid duplicate requests
 database = {}
@@ -11,10 +17,10 @@ def welcome_message():
     """ Welcome message when the app starts
     Main menu of the app, user can either go to the application form or close the app
     """
-    print("-------------------------")
+    print("------------------------------------")
     print(" Welcome to CheckAloan!\n"
           " Where you are not alone!")
-    print("-------------------------")
+    print("------------------------------------")
     print("1. Fill out the loan application.")
     print("2. Close the application.")
     print("-----------------------------------------------")
@@ -195,7 +201,7 @@ def get_loan_amount():
         try:
             loan_amount = int(
             input("How much would you like to borrow?\n"))
-            if loan_amount > 20000:
+            if loan_amount > MAX_LOAN:
                 answer = input(
                             "Would you like to proceed with the maximum amount of 20 000?" 
                             "Enter 'yes' or 'no':\n")
@@ -205,9 +211,8 @@ def get_loan_amount():
                     print("-------------------------------------------")
                     return None
                 elif answer.capitalize()[0] == "Y":
-                    loan_amount = 20000
+                    loan_amount = MAX_LOAN
                     return loan_amount
-                    break
                 else:
                     answer = input("Sorry, you have entered a wrong character. Enter y or n:\n")
                     while answer.capitalize()[0] != "Y" and answer.capitalize()[0] != "N":
@@ -228,7 +233,7 @@ def get_monthly_payment(loan_amount):
     while True:        
         try:
             monthly_payment = int(input("How much would you like to pay back monthly:\n"))
-            if loan_amount/monthly_payment > 60:
+            if loan_amount/monthly_payment > MAX_LOAN_DURATION:
                 print("-------------------------------------------------")
                 print("Sorry, the maximum loan term is 5 years.")
                 print("-------------------------------------------------")
@@ -243,7 +248,6 @@ def get_monthly_payment(loan_amount):
                 print("The monthly payment must be greater than 0.")
             else:
                 return monthly_payment
-                break
         except (ValueError, ZeroDivisionError) as e:
             print(f"Incorrect data was entered: {e}")
 
@@ -269,7 +273,7 @@ def applicant_details():
             break  # Exit if expenses exceed income
         loan_amount = get_loan_amount()
         if not loan_amount:
-            break  # Exit if loan amount is invalid or application is canceled
+            break  # Exit if user do not want to proceed with the max amount
         monthly_payment = get_monthly_payment(loan_amount)
         return name, email, phone, age, marital_status, kids, employment, income, expense, loan_amount, monthly_payment
 
@@ -297,7 +301,7 @@ class Applicant:
         self.expenses = expenses
         self.loan_amount = loan_amount
         self.monthly_payment = monthly_payment
-        self.score = 0 # Max score is 130, under 50 the application will be rejected
+        self.score = 0 # Max score is 130, under 70 the application will be rejected
         self.interest_rate = 1 # Interest rate depends on user details, calculated after the approval
     def summary(self):
         """
@@ -414,11 +418,11 @@ class Applicant:
         while True:
             try:
                 self.loan_amount = int(input("Correct loan amount:\n"))
-                if self.loan_amount > 20000:
+                if self.loan_amount > MAX_LOAN:
                     print("The maximum amount is 20000. Please do not enter higher amount.")
                 elif self.loan_amount <= self.monthly_payment:
                     print("The loan amount is less than or equal to the monthly payment.")
-                elif self.loan_amount/self.monthly_payment > 60:
+                elif self.loan_amount/self.monthly_payment > MAX_LOAN_DURATION:
                     self.monthly_payment = round(self.loan_amount/60)
                     break
                 else:
@@ -434,7 +438,7 @@ class Applicant:
         while True:
             try:
                 self.monthly_payment = int(input("Enter the updated estimated monthly payment:\n"))
-                if self.loan_amount/self.monthly_payment > 60:
+                if self.loan_amount/self.monthly_payment > MAX_LOAN_DURATION:
                     print("Sorry the loan lenght exceeds the maximum of 60 months.")
                 elif self.loan_amount <= self.monthly_payment:
                     print("The monthly payment cannot exceed the loan amount. The monthly payment must be less.")
@@ -521,7 +525,6 @@ class Applicant:
         else:
             self.score += 0
             self.interest_rate += 0.03
-        return self.score, self.interest_rate
 
     def check_score_for_cash_flow(self):
         """
@@ -541,7 +544,6 @@ class Applicant:
                 self.interest_rate += 0.03
         else:
             self.score += 0
-        return self.score, self.interest_rate
 
     def check_score_for_marital_status(self):
         """
@@ -553,7 +555,6 @@ class Applicant:
         else:
             self.score += 10
             self.interest_rate += 0.02
-        return self.score, self.interest_rate
 
     def check_score_for_kids(self):
         """
@@ -568,7 +569,6 @@ class Applicant:
         else:
             self.score += 10
             self.interest_rate += 0.03
-        return self.score, self.interest_rate
 
     def check_score_for_employment_status(self):
         """
@@ -579,19 +579,25 @@ class Applicant:
         else:
             self.score += 30
             self.interest_rate += 0.01
-        return self.score, self.interest_rate
 
     def calculate_monthly_payment(self):
         """
         Calculating the monthly payment with interest
         """
         return self.monthly_payment * self.interest_rate
+    
+    def calculate_score_and_interest(self):
+        self.check_score_for_age()
+        self.check_score_for_cash_flow()
+        self.check_score_for_employment_status()
+        self.check_score_for_kids()
+        self.check_score_for_marital_status()
 
     def decision(self):
         """
         Check the applicant score and approved/reject the loan request
         """
-        return "APPROVED" if self.score > 50 else "REJECTED"
+        return "APPROVED" if self.score > MIN_SCORE else "REJECTED"
 
     def loan_details(self):
         """
@@ -620,7 +626,7 @@ class Applicant:
                                self.interest_rate),
                                "Application": self.decision()}
         application_id += 1
-        return database
+        
     
     def check_duplicates(self):
         global database
@@ -630,25 +636,19 @@ class Applicant:
                       f"{applicant}")
                 return True
             
-            else:
-                self.add_to_database()
-                return False
+        return False
           
 
 def run_app():
     while welcome_message():
-        print("-----------------------------------------------")
+        print("------------------------------------")
         user = applicant_details()
         if user:
             applicant = Applicant(*user)
             print(applicant.summary())
             print(applicant.make_changes())
             print(applicant.summary())
-            applicant.check_score_for_employment_status()
-            applicant.check_score_for_age()
-            applicant.check_score_for_cash_flow()
-            applicant.check_score_for_kids()
-            applicant.check_score_for_marital_status()
+            applicant.calculate_score_and_interest()
             applicant.calculate_monthly_payment()
             print("The application is being reviewed.")
             print("------------------------------------")
@@ -656,12 +656,11 @@ def run_app():
                 print("------------------------------------")
             else:
                 print(applicant.decision())
-                print(applicant.score)
                 applicant.loan_details()
                 applicant.add_to_database()
                 print("------------------------------------")
                 print("Your application has been saved.")
-            print("------------------------------------")
+                print("------------------------------------")
             print("Thank you for choosing CheckAloan.")
             print("Returning to the main menu.")
             print("------------------------------------")
@@ -669,3 +668,4 @@ def run_app():
             print("Application is closing...")
 
 run_app()
+print(database)
