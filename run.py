@@ -44,7 +44,7 @@ def welcome_message():
     print("2. Close the application.")
     print("-----------------------------------------------")
     choice = input("Please press 1 to start the loan application"
-                   "or 2 to quit:\n")
+                   " or 2 to quit:\n")
     while choice != "1" or choice != "2":
         if choice == "1":
             return True
@@ -168,7 +168,7 @@ def get_dependent_children():
                                                     " dependent kids:\n"))
             if children < 0:
                 print(wrong_input() + "The number of kids cannot be negative."
-                                      "Pleaser enter 0 or a higher number.")
+                                      " Please enter 0 or a higher number.")
             else:
                 return children
         except ValueError as e:
@@ -254,8 +254,8 @@ def get_loan_amount():
             if loan_amount > MAX_LOAN:
                 answer = input(
                             standard_style() + "Would you like to proceed"
-                            "with the maximum amount of 20 000?"
-                            "Enter 'yes' or 'no':\n")
+                            " with the maximum amount of 20 000?"
+                            " Enter 'yes' or 'no':\n")
                 if answer.capitalize()[0] == "N":
                     print("-------------------------------------------")
                     print("Application cancelled!")
@@ -704,8 +704,8 @@ class Applicant:
             return (Fore.CYAN + Style.BRIGHT + "UNEXPECTED ERROR")
 
     def status(self):
-        return standard_style() + "APPROVED" if self.score > MIN_SCORE \
-               else wrong_input() + "REJECTED"
+        return (standard_style() + "APPROVED") if self.score > MIN_SCORE \
+               else (wrong_input() + "REJECTED")
 
     def add_to_database(self):
         """
