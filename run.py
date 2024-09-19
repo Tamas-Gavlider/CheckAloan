@@ -101,15 +101,13 @@ def get_age():
             age = int(input(standard_style() + "How old are you?:\n"))
             if age < 18:
                 print(wrong_input() + "You must be at least 18 years old to apply for a loan.\n"
-                    "------------------------------------------------------------------\n"
-                    "Application cancelled.")
+                    "------------------------------------------------------------------\n")
                 return False
             elif age > 18 and age < 65:
                 return age
             else:
                 print(wrong_input() + "Sorry, you are too old to apply for a loan..\n"
-                    "-------------------------------------------\n"
-                    "Application cancelled.")
+                    "-------------------------------------------\n")
                 return False
         except ValueError:
             print(wrong_input() + "Invalid input. Please enter a valid age.")
@@ -471,7 +469,7 @@ class Applicant:
             answer = input(standard_style() + "The above details are correct? Press enter to submit your details  or 'n'"
                            " to make changes:\n")
             while True:
-                    if answer.capitalize()[0] == "":
+                    if answer == "":
                         print("Thank you for the confirmation. Now we are checking"
                                 " if you are eligible for a loan...")
                         break
@@ -537,6 +535,7 @@ class Applicant:
         else:
             self.score += 0
             self.interest_rate += 0.03
+        return self.score, self.interest_rate
 
     def check_score_for_cash_flow(self):
         """
@@ -556,6 +555,7 @@ class Applicant:
                 self.interest_rate += 0.03
         else:
             self.score += 0
+        return self.score, self.interest_rate
 
     def check_score_for_marital_status(self):
         """
@@ -567,6 +567,7 @@ class Applicant:
         else:
             self.score += 10
             self.interest_rate += 0.02
+        return self.score, self.interest_rate
 
     def check_score_for_kids(self):
         """
@@ -581,6 +582,7 @@ class Applicant:
         else:
             self.score += 10
             self.interest_rate += 0.03
+        return self.score, self.interest_rate
 
     def check_score_for_employment_status(self):
         """
@@ -588,9 +590,11 @@ class Applicant:
         """
         if self.employment is False:
             self.score -= 130
+            
         else:
             self.score += 30
             self.interest_rate += 0.01
+        return self.score, self.interest_rate
 
     def calculate_monthly_payment(self):
         """
@@ -604,6 +608,7 @@ class Applicant:
         self.check_score_for_employment_status()
         self.check_score_for_kids()
         self.check_score_for_marital_status()
+        return self.score, self.interest_rate
 
     def decision(self):
         """
@@ -611,21 +616,21 @@ class Applicant:
         """
         global MIN_SCORE
         if self.score > MIN_SCORE:
-            print(standard_style() + "------------------------------------\n"
+            return (standard_style() + "------------------------------------\n"
                   f" The APPROVED loan amount is {self.loan_amount}\n"
                   f" The interest rate is {round((self.interest_rate-1)*100)}%\n"
                   f" The monthly payment is {round(self.monthly_payment*self.interest_rate)}\n"
                   "------------------------------------")
-            return "APPROVED"
         elif self.score < MIN_SCORE: 
-            print(wrong_input() + "Unfortunately, your loan request cannot be approved based on the provided details.\n"
+            return (wrong_input() + "Unfortunately, your loan request cannot be approved based on the provided details.\n"
                   f"You have reached {self.score} points based on the provided details.\n"
                   "It is not sufficient for the loan approval.")
-            return "REJECTED"
         else:
-            print(Fore.CYAN + Style.BRIGHT + "UNEXPECTED ERROR")
-            return None
-
+            return (Fore.CYAN + Style.BRIGHT + "UNEXPECTED ERROR")
+            
+    def status(self):
+        return "APPROVED" if self.score > MIN_SCORE else "REJECTED"
+    
     def add_to_database(self):
         """
         Add the applicant's name to the database as the key
@@ -636,7 +641,7 @@ class Applicant:
                                "Loan amount": self.loan_amount,
                                "Monthly payment": round(self.monthly_payment *
                                self.interest_rate),
-                               "Application": self.decision()}
+                               "Application": self.status()}
         application_id += 1
         
     
@@ -664,10 +669,12 @@ def run_app():
             applicant.calculate_monthly_payment()
             print("The application is being reviewed.")
             print("------------------------------------")
+            print(applicant.status())
+            print("------------------------------------")
             if applicant.check_duplicates():
-                print("------------------------------- -")
+                print("----------------------------------")
             else:
-                applicant.decision()
+                print(applicant.decision())
                 applicant.add_to_database()
                 print(standard_style() + "------------------------------------")
                 print("Your application has been saved.")
