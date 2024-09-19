@@ -13,8 +13,32 @@ class Test(unittest.TestCase):
         name = get_name()
         self.assertEqual(name,"Tamas")
     # Test for the length of the name
+    @patch("builtins.input", side_effect = ["four","Tamas"])
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_get_name_short_input(self,mock_stdout,mock_input):
+        name = get_name()
+        output = mock_stdout.getvalue()
+        self.assertEqual(name,"Tamas")
+        self.assertIn("The name is too short.", output)
+        
     # Test if the name contains numbers
+    @patch("builtins.input", side_effect = ["12345","Tamas"])
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_get_name_num_input(self,mock_stdout,mock_input):
+        name = get_name()
+        output = mock_stdout.getvalue()
+        self.assertEqual(name,"Tamas")
+        self.assertIn("Name cannot contain numbers.", output)
+        
     # Test if no data entered
+    @patch("builtins.input", side_effect = [""," ","Tamas"])
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_get_name_no_input(self,mock_stdout,mock_input):
+        name = get_name()
+        output = mock_stdout.getvalue()
+        self.assertEqual(name,"Tamas")
+        self.assertIn("The name field cannot be empty.", output)
+        
     # Test for email    
     @patch("builtins.input", return_value = "tamasgavlider@gmail.com")
     def test_get_email(self,mock_input):
