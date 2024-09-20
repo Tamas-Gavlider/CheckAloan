@@ -248,10 +248,10 @@ def get_loan_amount():
     """
     Get the loan amount. Loan amount cannot exceed 20 000..
     """
+    loan_amount = int(input(standard_style() + "How much would you"
+                                                       " like to borrow?\n"))
     while True:
         try:
-            loan_amount = int(input(standard_style() + "How much would you"
-                                                       " like to borrow?\n"))
             if loan_amount > MAX_LOAN:
                 answer = input(
                             standard_style() + "Would you like to proceed"
@@ -268,18 +268,12 @@ def get_loan_amount():
                 else:
                     answer = input(wrong_input() + "Sorry, you have entered"
                                    " a wrong character. Enter y or n:\n")
-                    while answer.capitalize()[0] != "Y" or \
-                            answer.capitalize()[0] != "N":
-                        answer = input(wrong_input() + "Sorry, you have "
-                                       "entered a wrong character. "
-                                       "Enter y or n:\n")
             elif loan_amount <= 0:
                 print(wrong_input() + "Amount must be higher than 0.")
             else:
                 return loan_amount
         except (ValueError, IndexError) as e:
             print(wrong_input() + f"Incorrect data was entered: {e}")
-
 
 def get_monthly_payment(loan_amount):
     """
@@ -365,7 +359,7 @@ class Applicant:
         self.expenses = expenses
         self.loan_amount = loan_amount
         self.monthly_payment = monthly_payment
-        self.score = 0  # Max score is 130, under 70 the application rejected
+        self.score = 0  # Max score is 120, under 70 the application rejected
         self.interest_rate = 1  # Calculated after the approval
 
     def summary(self):
@@ -593,7 +587,7 @@ class Applicant:
         Calculate the score/interest for the age of the applicant
         """
         if self.age is False:
-            self.score -= 130
+            self.score -= 120
         elif self.age < 25 and self.age > 18:
             self.score += 10
             self.interest_rate += 0.02
