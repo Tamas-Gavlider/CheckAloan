@@ -249,7 +249,7 @@ def get_loan_amount():
     Get the loan amount. Loan amount cannot exceed 20 000..
     """
     loan_amount = int(input(standard_style() + "How much would you"
-                                                       " like to borrow?\n"))
+                                               " like to borrow?\n"))
     while True:
         try:
             if loan_amount > MAX_LOAN:
@@ -266,8 +266,8 @@ def get_loan_amount():
                     loan_amount = MAX_LOAN
                     return loan_amount
                 else:
-                    answer = input(wrong_input() + "Sorry, you have entered"
-                                   " a wrong character. Enter y or n:\n")
+                    print(wrong_input() + "Sorry, you have entered"
+                                   " a wrong character.")
             elif loan_amount <= 0:
                 print(wrong_input() + "Amount must be higher than 0.")
             else:
