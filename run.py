@@ -768,3 +768,5 @@ def run_app():
             print("------------------------------------")
         else:
             print("Application is closing...")
+            
+run_app()
