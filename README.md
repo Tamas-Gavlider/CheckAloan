@@ -40,12 +40,16 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
         - Age over 65<br>![Age-over-65](/docs/screenshots/age-over-65.png)
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
     - The monthly payment cannot exceed the loan amount. The user will be asked to adjust<br> the monthly payment.
-- Data maintaned in class instances. Except the welcome_message and applicant_details functions.<br> Those are handled outside of the class.
+    - The application will be cancelled if the expense amount is higher than the income amount><br>
+- Data maintaned in class instances. Except the welcome_message, applicant_details and the get details functions.<br> Those are handled outside of the class.
 - **welcome_message** will greet the user and, based on the input, either start the application or close it.
 - **applicant_details** will return the user inputs, which will be used to create a class object.
 - **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers.
 
 ### Future Features
+
+User will have an option to schedule an appointment with a financial advisor after the submission of the application.
+Additional inputs from customer like any missed payments in the pass, criminal record etc.
 
 ## Data Model
 
@@ -55,6 +59,11 @@ To help visualize the structure and logic of the code, I have created a flowchar
 
 The scoring and interest rate system can be found in the Excel sheet.
 ![flowchart](docs/flowchart.png)
+
+The following libraries were used:
+- Colorama to add color to the text
+- Tabulate to have the user details in a table
+- RegEx used for phone and email validation
 
 ## Testing
 
@@ -70,6 +79,13 @@ No bugs remaining.
 
 - PEP8 
     - No errors were returned from [PEP8](https://pep8ci.herokuapp.com/)
+![Pep8unittest](/docs/validation/unittest-pep8.png)
+
+### Unit testing
+
+Unit testint returned no errors.
+
+![Unittest](/docs/validation/unittest.png)
 
 ## Deployment
 
@@ -78,7 +94,7 @@ Steps for deployment:
 - Fork or clone the repository CheckAloan
 - Create a new Heroku app 
 - Set the buildbacks for **Python** and **NodeJS** in that order
-- You must then create a Config Var called PORT. Set this to 8000
+- You must then create a Config Var called PORT. Set this to 8000.
 - Link the Heroku app to the repository
 - Click on <strong>Deploy</strong>
 
@@ -115,3 +131,7 @@ These resources provided valuable insights into testing input handling and mocki
 For email validation, I referenced the following resource to implement more complex checks beyond just "@" and ".":
 - [javatpoint.com](https://www.javatpoint.com/how-to-validated-email-address-in-python-with-regular-expression.)
 This resource helped in applying regular expressions for robust email validation.
+
+### Acknowledgements
+
+I would like to acknowledge my Code Institute mentor Graeme Taylor for his valuable advices.

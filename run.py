@@ -267,13 +267,14 @@ def get_loan_amount():
                     return loan_amount
                 else:
                     print(wrong_input() + "Sorry, you have entered"
-                                   " a wrong character.")
+                          " a wrong character.")
             elif loan_amount <= 0:
                 print(wrong_input() + "Amount must be higher than 0.")
             else:
                 return loan_amount
         except (ValueError, IndexError) as e:
             print(wrong_input() + f"Incorrect data was entered: {e}")
+
 
 def get_monthly_payment(loan_amount):
     """
