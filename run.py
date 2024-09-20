@@ -1,5 +1,5 @@
 import re
-from colorama import Fore, Style, init
+from colorama import Fore, Style
 from tabulate import tabulate
 
 
