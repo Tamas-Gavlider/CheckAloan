@@ -167,12 +167,12 @@ def get_dependent_children():
             children = int(input(standard_style() + "Number of"
                                                     " dependent kids:\n"))
             if children < 0:
-                print(wrong_input() + "The number of kids cannot be negative."
-                                      " Please enter 0 or a higher number.")
+                print(wrong_input() + ("The number of kids cannot be negative."
+                                      " Please enter 0 or a higher number."))
             else:
                 return children
         except ValueError as e:
-            print(wrong_input() + f"{e} is not a valid number.")
+            print(wrong_input() + (f"Invalid unput: {e}."))
     return children
 
 
@@ -211,9 +211,9 @@ def get_income():
             income = int(input(standard_style() + "Please provide your"
                                                   " monthly income:\n"))
             while income < 0 or str(income)[0] == "0":
-                print(wrong_input() + "Income cannot be negative.")
-                income = int(standard_style() + "Please enter a"
-                                                " valid amount:\n")
+                print(wrong_input() + ("Income cannot be negative."))
+                income = int(standard_style() + ("Please enter a"
+                                                " valid amount:\n"))
             break
         except ValueError:
             print(wrong_input() + "Incorrect data was entered.")
@@ -765,5 +765,3 @@ def run_app():
         else:
             print("Application is closing...")
 
-
-run_app()
