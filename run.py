@@ -168,11 +168,11 @@ def get_dependent_children():
                                                     " dependent kids:\n"))
             if children < 0:
                 print(wrong_input() + ("The number of kids cannot be negative."
-                                      " Please enter 0 or a higher number."))
+                                       " Please enter 0 or a higher number."))
             else:
                 return children
         except ValueError as e:
-            print(wrong_input() + (f"Invalid unput: {e}."))
+            print(wrong_input() + (f"Invalid input: {e}."))
     return children
 
 
@@ -213,7 +213,7 @@ def get_income():
             while income < 0 or str(income)[0] == "0":
                 print(wrong_input() + ("Income cannot be negative."))
                 income = int(standard_style() + ("Please enter a"
-                                                " valid amount:\n"))
+                             " valid amount:\n"))
             break
         except ValueError:
             print(wrong_input() + "Incorrect data was entered.")
@@ -255,7 +255,7 @@ def get_loan_amount():
                 answer = input(
                             standard_style() + "Would you like to proceed"
                             " with the maximum amount of 20 000?"
-                            " Enter 'yes' or 'no':\n")
+                            " Enter 'y' or 'n':\n")
                 if answer.capitalize()[0] == "N":
                     print("-------------------------------------------")
                     print("Application cancelled!")
@@ -704,8 +704,12 @@ class Applicant:
             return (Fore.CYAN + Style.BRIGHT + "UNEXPECTED ERROR")
 
     def status(self):
-        return (standard_style() + "APPROVED") if self.score > MIN_SCORE \
-               else (wrong_input() + "REJECTED")
+        if self.score > MIN_SCORE:
+            print(standard_style())
+            return "APPROVED"
+        else:
+            print(wrong_input())
+            return "REJECTED"
 
     def add_to_database(self):
         """
@@ -764,4 +768,3 @@ def run_app():
             print("------------------------------------")
         else:
             print("Application is closing...")
-
