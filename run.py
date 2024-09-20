@@ -1,5 +1,5 @@
 import re
-from colorama import Fore, Style
+from colorama import Fore, Style, init
 from tabulate import tabulate
 
 
@@ -53,6 +53,7 @@ def welcome_message():
             return False
         else:
             choice = input(wrong_input() + "Please enter either 1 or 2:\n")
+            print(standard_style())
 
 
 def get_name():
@@ -642,13 +643,13 @@ class Applicant:
         Score/Interest based on the number of kids
         """
         if self.kids == 0:
-            self.score += 30
+            self.score += 20
             self.interest_rate += 0.01
         elif self.kids > 0 and self.kids < 3:
-            self.score += 20
+            self.score += 10
             self.interest_rate += 0.02
         else:
-            self.score += 10
+            self.score += 0
             self.interest_rate += 0.03
         return self.score, self.interest_rate
 
@@ -657,7 +658,7 @@ class Applicant:
         Score/Interest for employment status
         """
         if self.employment is False:
-            self.score -= 130
+            self.score -= 120
 
         else:
             self.score += 30
@@ -689,23 +690,23 @@ class Applicant:
         if self.score > MIN_SCORE:
             return (standard_style() + "------------------------------------\n"
                     f"The APPROVED loan amount is {self.loan_amount}\n"
-                    "The interest rate is"
+                    "The interest rate is "
                     f"{round((self.interest_rate-1)*100)}%\n"
                     "The monthly payment is"
                     f" {round(self.monthly_payment*self.interest_rate)}\n"
                     "------------------------------------")
-        elif self.score < MIN_SCORE:
+        else:
             return (wrong_input() + "Unfortunately, your loan request cannot"
                     " be approved based on the provided details.\n"
                     f"You have reached {self.score} points based on the "
                     "provided details.\n"
                     "It is not sufficient for the loan approval.")
-        else:
-            return (Fore.CYAN + Style.BRIGHT + "UNEXPECTED ERROR")
 
     def status(self):
+        """
+        Return the status of the application
+        """
         if self.score > MIN_SCORE:
-            print(standard_style())
             return "APPROVED"
         else:
             print(wrong_input())
@@ -750,13 +751,13 @@ def run_app():
             applicant.make_changes()
             applicant.calculate_score_and_interest()
             applicant.calculate_monthly_payment()
-            print("The application is being reviewed.")
             print("------------------------------------")
-            print(applicant.status())
+            print("The application is being reviewed.")
             print("------------------------------------")
             if applicant.check_duplicates():
                 print("----------------------------------")
             else:
+                print(applicant.status())
                 print(applicant.decision())
                 applicant.add_to_database()
                 print(standard_style() + "---------------------------"
@@ -768,5 +769,6 @@ def run_app():
             print("------------------------------------")
         else:
             print("Application is closing...")
-            
+
+
 run_app()
