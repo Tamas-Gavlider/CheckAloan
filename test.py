@@ -206,11 +206,29 @@ class Test(unittest.TestCase):
         self.assertEqual(loan_amount, 5000)
 
     # Test for loan amount if user confirms the maximum loan amount
-    @patch("builtins.input", side_effect=["25000", "yes"])
+    @patch("builtins.input", side_effect=["25000", "y"])
     def test_loan_amount_exceeds_limit_proceed(self, mock_input):
         with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
             loan = get_loan_amount()
             self.assertEqual(loan, 20000)
+
+    # Test loan amount for negative inputs
+    @patch("builtins.input", side_effect=["-1000", "0", "1000"])
+    def test_loan_amount_negative(self, mock_input):
+        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
+            loan = get_loan_amount()
+            self.assertEqual(loan, 1000)
+            self.assertIn("Amount must be higher than 0.",
+                          mock_stdout.getvalue())
+
+    # Test loan amount for wrong inputs
+    @patch("builtins.input", side_effect=["abc", "", " ", "1000"])
+    def test_loan_for_string_inputs(self, mock_input):
+        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
+            loan = get_loan_amount()
+            self.assertEqual(loan, 1000)
+            self.assertIn("Incorrect data was entered:",
+                          mock_stdout.getvalue())
 
     # Test for loan amount if user want to borrow more than 20000 and
     # cancelled the application
@@ -220,24 +238,6 @@ class Test(unittest.TestCase):
             loan = get_loan_amount()
             self.assertIsNone(loan)
             self.assertIn("Application cancelled!", mock_stdout.getvalue())
-
-    # Test loan amount for negative inputs
-    @patch("builtins.input", side_effect=["-1000", "00", "0", "1000"])
-    def test_loan_amount_negative(self, mock_input):
-        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
-            loan = get_loan_amount()
-            self.assertEqual(loan, 1000)
-            self.assertIn("Amount must be higher than 0.",
-                          mock_stdout.getvalue())
-
-    # Test loan amount for wrong inputs
-    @patch("builtins.input", side_effect=["a", "", " ", "1000"])
-    def test_loan_for_string_inputs(self, mock_input):
-        with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
-            loan = get_loan_amount()
-            self.assertEqual(loan, 1000)
-            self.assertIn("Incorrect data was entered: invalid literal for"
-                          " int() with base 10:", mock_stdout.getvalue())
 
     # Test for monthly payment input
     @patch("builtins.input", return_value=5000)

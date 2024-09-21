@@ -248,10 +248,10 @@ def get_loan_amount():
     """
     Get the loan amount. Loan amount cannot exceed 20 000..
     """
-    loan_amount = int(input(standard_style() + "How much would you"
-                                               " like to borrow?\n"))
     while True:
         try:
+            loan_amount = int(input(standard_style() + "How much would you"
+                                    " like to borrow?\n"))
             if loan_amount > MAX_LOAN:
                 answer = input(
                             standard_style() + "Would you like to proceed"
