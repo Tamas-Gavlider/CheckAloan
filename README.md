@@ -46,11 +46,6 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
     ![Error message](/docs/screenshots/monthly-payment-error-for-low-amount.png)
     - The application will be cancelled if the expense is greater than the income.
     <br>![Expense>Income](/docs/screenshots/expense-greater-than-income.png)
-- Data maintaned in class instances. Except the welcome_message, applicant_details and the get details functions.<br> Those are handled outside of the class.
-- **welcome_message** will greet the user and, based on the input, either start the application or close it.
-- **applicant_details** will return the user inputs, which will be used to create a class object.
-- **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers. If the user has already submitted an application, a message will display the status of the previous request. Duplicate requests will be validated by the name and email address of the user.<br>
-![Duplicate](/docs/screenshots/duplicate-message.png)
 
 ### Future Features
 
@@ -59,16 +54,52 @@ Additional inputs from customer like any missed payments in the pass, criminal r
 
 ## Data Model
 
-The features, scoring system,interest rate increase and criteria for the app were initially created in [excel](/docs/roadmap.xlsx).
+### Excel 
 
-To help visualize the structure and logic of the code, I have created a flowchart that outlines the main components and their interactions. 
+The main features, scoring system, interest rate calculation, and criteria were initially created in an [Excel sheet](/docs/roadmap.xlsx).
 
-The scoring and interest rate system can be found in the Excel sheet.
+### Flowchart
+To help visualize the structure and logic of the code, I have created a flowchart that outlines the main components and their interactions.
 ![flowchart](docs/flowchart.png)
 
+### Data handling
+
+Data maintaned in class instances. Some functions are handled outside of the class for simplicity and testing purposes.<br> 
+
+#### Constant and global variables
+
+- **database** is an empty dictionary. Store the user details.
+- **MIN SCORE** 70 points that needs to be reached for approval.
+- **MAX LOAN** the maximum loan amount of 20 000.
+- **MAX LOAN DURATION** - Max loan repayment length in months.
+- **application ID** - will serve as the key in the database.
+
+#### Outside functions
+- **standard_style** standard color and style. The text is set to green by default and style to bright for better visibility.
+- **wrong_input** will change the text color to red if the input is invalid or the application is rejected.
+- **welcome_message** will greet the user and, based on the input, either start the application or close it.
+- **get_functions** will validate and return the user inputs.
+- **applicant_details** will return the user inputs, which will be used to create a class object.
+
+#### Applicant Class
+
+- **summary** - will return the user details.<br>
+- **change functions** - change the user details. These functions are using the same validation methods as the get functions outside the class. Exceptions are:
+  - **change employment** - if the user will change the employment status, it will not auto cancel the application. Instead -130 points will be added to the score so the minimum score cannot be reached. This will guarantee the rejection. Reason why I kept it this way is that the user might change this details in error and it would not promote the good user experience if the form need to be filled out again.
+  - **change income** - first had to make sure the input will not be accepted if the user press enter without providing any inputs. It let the user to enter negative amount or lower amount than the expense.
+  - **change loan** - I wanted to make sure that the monthly payment will fit within the 60-month term. If the loan amount changes, the monthly payment will be automatically recalculated to stay within this term.
+- **make changes** - user will need to press n to make changes or press enter to submit the form. Validation done to make sure that other input will not be accepted.
+- **check duplicates** - will check if the user had any prior application with us. It will search for the user name and email address. Function will return the previous application status with the loan details if duplicate found. Otherwise it will calculate the score and interest rate.
+![Duplicate](/docs/screenshots/duplicate-message.png)
+- **calculate functions** - once the details are confirmed , for each detail the score and interest rate will be calculated. 
+- **status function** - will return either "APPROVED" or "REJECTED".
+- **decision function** - will return the loan details and monthly payment with interest rate for the approved application or the rejection message with the score. 
+- **add to database** - any applications get by the decision phase will be added to the database regardless the outcome. Beside the name and email address no other personal details will be stored. This function will increment the **application ID** by one to make sure the applications will not be replaced in the database.
+
 The following libraries were used:
-- Colorama to add color to the text
-- Tabulate to have the user details in a table
+- Colorama to add color to the text. The text is set to green by default. It changes to red for wrong input or if the application is rejected, and to blue if the user submits a duplicate request.
+- Tabulate to display the user details in a table.<br>
+![Summary](/docs/screenshots/summary-ss.png)
 - RegEx used for phone and email validation
 
 ## Testing
