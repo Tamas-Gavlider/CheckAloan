@@ -18,26 +18,23 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
 ### Existing features
 
  - Option to start the application form or quit the app.
-
-![Welcome screen](docs/screenshots/welcome-screen.png)
-
  - Accepts user inputs.
  - Add the user's data to the database after the final decision
  - Input validation and error-checking
     - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.<br>
-    ![Welcome screen](/docs/gif/main-menu.gif)
+    ![Welcome screen]()
     - String inputs like name and phone must meet minimum/maximum length requirements.<br>
-      - Name validation<br>![Name-GIF](/docs/gif/name-input-validation.gif)
-      - Phone number validation<br>![Phone-GIF](/docs/gif/phone-input-validation.gif)
-      - Marital status validation<br>![Marital-status-GIF](/docs/gif/marital-status-input-validation.gif)
-    - A robust email validation method was used for email input.<br>![Email-GIF](/docs/gif/email-input-validation.gif.gif)
+      - Name validation<br>![Name-GIF]()
+      - Phone number validation<br>![Phone-GIF]()
+      - Marital status validation<br>![Marital-status-GIF]()
+    - A robust email validation method was used for email input.<br>![Email-GIF]()
     - Integer inputs will raise an error if 0, a string or no data is entered.
-        - Number of dependent children<br>![Number-of-kids-GIF](/docs/gif/number-of-kids.gif)
-        - Income/Expense validation<br>![Income-expense-GIF](/docs/gif/income-expense-validation.gif)
+        - Number of dependent children<br>![Number-of-kids-GIF]()
+        - Income/Expense validation<br>![Income-expense-GIF]()
     - If the input for age is less than 18 or more than 65, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
-        - Age between 18 - 65<br>![Age-gif](/docs/gif/age-input-validation.gif)
-        - Age under 18<br>![Age-under-18](/docs/screenshots/age-under-18.png)
-        - Age over 65<br>![Age-over-65](/docs/screenshots/age-over-65.png)
+        - Age between 18 - 65<br>![Age-gif]()
+        - Age under 18<br>![Age-under-18]()
+        - Age over 65<br>![Age-over-65]()
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
     - The monthly payment cannot exceed the loan amount. The user will be asked to adjust<br> the monthly payment.
     - The application will be cancelled if the expense amount is higher than the income amount><br>

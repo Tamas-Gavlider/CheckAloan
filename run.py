@@ -106,7 +106,7 @@ def get_phone():
                                          " phone number:\n")
         pattern = re.compile(r'^\d{10}$')
         if pattern.match(phone) is None:
-            print(wrong_input() + "Please enter a valid phone number:\n")
+            print(wrong_input() + "Please enter a valid phone number.")
         else:
             return phone
 
@@ -578,7 +578,7 @@ class Applicant:
                         print(wrong_input() + "Number out of range.")
                 else:
                     answer = input(wrong_input() + "Please press enter to"
-                                   " submit for review or n to make changes.")
+                                   " submit for review or n to make changes.\n")
         except (ValueError, IndexError) as e:
             print(wrong_input() + f"Wrong data was entered: {e}.")
         return self.summary()
@@ -693,9 +693,8 @@ class Applicant:
         else:
             return (wrong_input() + "Unfortunately, your loan request cannot"
                     " be approved based on the provided details.\n"
-                    f"You have reached {self.score} points based on the "
-                    "provided details.\n"
-                    "It is not sufficient for the loan approval.")
+                    f"You have accumulated {self.score} points.\n"
+                    "It is insufficient for loan approval.")
 
     def status(self):
         """
