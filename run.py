@@ -128,7 +128,7 @@ def get_age():
                 return age
             else:
                 print(wrong_input() + "Sorry, you are too old to apply "
-                                      "for a loan..\n"
+                                      "for a loan.\n"
                                       "------------------------------"
                                       "-------------\n")
                 return False
@@ -403,10 +403,11 @@ class Applicant:
         """
         Update the age
         """
-        self.age = get_age()
-        while self.age is False:
-            print(wrong_input() + "Age cannot be under 18 or over 65.")
-            self.age = int(input(standard_style() + "Enter your correct age:"))
+        while True:
+            self.age = get_age()
+            if self.age > 18 and self.age < 65:
+                break
+        
 
     def change_marital_status(self):
         """
