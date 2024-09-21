@@ -22,26 +22,35 @@ Checkaloan is aPython terminal-based application that evaluates the loan eligibi
  - Add the user's data to the database after the final decision
  - Input validation and error-checking
     - The user must press 1 to start the application or press 2 to close it.<br> Other characters or no input will not be accepted.<br>
-    ![Welcome screen]()
+    ![Welcome screen](/docs/gif/welcome-page.gif)
+    ![Start app](/docs/gif/start-app.gif)
     - String inputs like name and phone must meet minimum/maximum length requirements.<br>
-      - Name validation<br>![Name-GIF]()
-      - Phone number validation<br>![Phone-GIF]()
-      - Marital status validation<br>![Marital-status-GIF]()
-    - A robust email validation method was used for email input.<br>![Email-GIF]()
+      - Name validation<br>![Name-GIF](/docs/gif/name-validation.gif)
+      - Phone number validation<br>![Phone-GIF](/docs/gif/phone-validation.gif)
+      - Marital status validation<br>![Marital-status-GIF](/docs/gif/marital-status-validation.gif)
+    - A robust email validation method was used for email input.<br>![Email-GIF](/docs/gif/email-validation.gif)
     - Integer inputs will raise an error if 0, a string or no data is entered.
-        - Number of dependent children<br>![Number-of-kids-GIF]()
+        - Number of dependent children<br>![Number-of-kids-GIF](/docs/gif/validation-dependent-children.gif)
         - Income/Expense validation<br>![Income-expense-GIF]()
     - If the input for age is less than 18 or more than 65, the loan application will be canceled,<br> and the user will be taken back to the welcome page.
-        - Age between 18 - 65<br>![Age-gif]()
-        - Age under 18<br>![Age-under-18]()
-        - Age over 65<br>![Age-over-65]()
+        - Age with wrong inputs<br>![Age-gif](/docs/gif/age-validation.gif)
+        - Age under 18<br>![Age-under-18](/docs/screenshots/age-under-18.png)
+        - Age over 65<br>![Age-over-65](/docs/screenshots/age-over-65.png)
+        - Age between 18 - 65<br>![Age-valid](/docs/gif/age-validation-valid-age.gif)
+    - If the user is unemployed the application will be cancelled,
+    <br>and the user will be taken back to the welcome page.
+    ![Employment](/docs/gif/employment-validation-unemployed.gif)
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.
     - The monthly payment cannot exceed the loan amount. The user will be asked to adjust<br> the monthly payment.
-    - The application will be cancelled if the expense amount is higher than the income amount><br>
+    - The monthly payment should be calculated to ensure the loan is repaid in no more than 60 months.<br>
+    ![Error message](/docs/screenshots/monthly-payment-error-for-low-amount.png)
+    - The application will be cancelled if the expense is greater than the income.
+    <br>![Expense>Income](/docs/screenshots/expense-greater-than-income.png)
 - Data maintaned in class instances. Except the welcome_message, applicant_details and the get details functions.<br> Those are handled outside of the class.
 - **welcome_message** will greet the user and, based on the input, either start the application or close it.
 - **applicant_details** will return the user inputs, which will be used to create a class object.
-- **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers.
+- **database** is an empty dictionary. The applications that reach the decision phase will be stored as integers. If the user has already submitted an application, a message will display the status of the previous request. Duplicate requests will be validated by the name and email address of the user.<br>
+![Duplicate](/docs/screenshots/duplicate-message.png)
 
 ### Future Features
 

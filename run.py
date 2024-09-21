@@ -407,7 +407,6 @@ class Applicant:
             self.age = get_age()
             if self.age > 18 and self.age < 65:
                 break
-        
 
     def change_marital_status(self):
         """
@@ -578,8 +577,8 @@ class Applicant:
                     else:
                         print(wrong_input() + "Number out of range.")
                 else:
-                    answer = input(wrong_input() + "Please press enter to"
-                                   " submit for review or n to make changes.\n")
+                    answer = input(wrong_input() + "Please press enter to "
+                                   "submit for review or n to make changes.\n")
         except (ValueError, IndexError) as e:
             print(wrong_input() + f"Wrong data was entered: {e}.")
         return self.summary()
@@ -615,6 +614,9 @@ class Applicant:
             elif self.income - self.expenses >= self.monthly_payment*1.5:
                 self.score += 20
                 self.interest_rate += 0.02
+            elif self.income - self.expense < self.monthly_payment:
+                self.score -= 10
+                self.interest_rate += 0.05
             else:
                 self.score += 0
                 self.interest_rate += 0.03
@@ -683,7 +685,7 @@ class Applicant:
         Check the applicant score and approved/reject the loan request
         """
         global MIN_SCORE
-        if self.score > MIN_SCORE:
+        if self.score >= MIN_SCORE:
             return (standard_style() + "------------------------------------\n"
                     f"The APPROVED loan amount is {self.loan_amount}\n"
                     "The interest rate is "
