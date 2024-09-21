@@ -614,7 +614,7 @@ class Applicant:
             elif self.income - self.expenses >= self.monthly_payment*1.5:
                 self.score += 20
                 self.interest_rate += 0.02
-            elif self.income - self.expense < self.monthly_payment:
+            elif self.income - self.expenses < self.monthly_payment:
                 self.score -= 10
                 self.interest_rate += 0.05
             else:
