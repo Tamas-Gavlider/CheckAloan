@@ -67,7 +67,7 @@ def get_name():
             name_check = re.findall('\\d', name)
             if name.strip() == "":
                 print(wrong_input() + "The name field cannot be empty.")
-            elif len(name) < 5:
+            elif len(name) < 6:
                 print(wrong_input() + "The name is too short.")
             elif name_check:
                 print(wrong_input() + "Name cannot contain numbers.")
