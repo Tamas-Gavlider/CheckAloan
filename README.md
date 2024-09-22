@@ -103,6 +103,8 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 - **calculate functions** - once the details are confirmed , for each detail the score and interest rate will be calculated. 
 - **status function** - will return either "APPROVED" or "REJECTED".
 - **decision function** - will return the loan details and monthly payment with interest rate for the approved application or the rejection message with the score. 
+![Approved](/docs/screenshots/decision.png)<br>
+![Rejected](/docs/screenshots/rejected.png)
 - **add to database** - any applications get by the decision phase will be added to the database regardless the outcome. Beside the name and email address no other personal details will be stored. This function will increment the **application ID** by one to make sure the applications will not be replaced in the database.
 
 The following libraries were used:
@@ -133,7 +135,7 @@ No bugs remaining.
 
 Unit testing returned no errors.
 
-[Unittest](/docs/validation/unittest.png)
+![Unittest](/docs/validation/unittest.png)
 
 ## Deployment
 
@@ -177,7 +179,7 @@ For unit testing, I utilized methods and examples from the following resources:
 These resources provided valuable insights into testing input handling and mocking techniques.
 
 For email validation, I referenced the following resource to implement more complex checks beyond just "@" and ".":
-- [javatpoint.com](https://www.javatpoint.com/how-to-validated-email-address-in-python-with-regular-expression.)
+- [Javatpoint](https://www.javatpoint.com/how-to-validated-email-address-in-python-with-regular-expression.)
 This resource helped in applying regular expressions for robust email validation.
 
 ### Acknowledgements
