@@ -127,8 +127,10 @@ No bugs remaining.
 
 - PEP8 
     - No errors were returned from [PEP8](https://pep8ci.herokuapp.com/)
-     Unit test<br>![Pep8unittest](/docs/validation/unittest-pep8.png)
-     Run file<br>![Run.py](/docs/validation/run-file-validation.png)
+     Unit test<br>![Pep8unittest](/docs/validation/unittest-pep8.png)<br>
+     Run file<br>![Run.py](/docs/validation/run-file-validation.png)<br>
+     It returned a whitespace before "," in line 734, however there is none.<br>
+     ![error](/docs/validation/pep8-error.png)
 
 
 ### Unit testing
