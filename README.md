@@ -85,6 +85,7 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 - **welcome_message** will greet the user and, based on the input, either start the application or close it.
 - **get_functions** will validate and return the user inputs.
 - **applicant_details** will return the user inputs, which will be used to create a class object.
+- **run** this function will manage the execution of the application.
 
 #### Applicant Class
 

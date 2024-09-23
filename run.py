@@ -703,7 +703,7 @@ class Applicant:
         """
         Return the status of the application
         """
-        if self.score > MIN_SCORE:
+        if self.score >= MIN_SCORE:
             return "APPROVED"
         else:
             print(wrong_input())
@@ -738,7 +738,7 @@ class Applicant:
         return False
 
 
-def run_app():
+def run():
     while welcome_message():
         print("------------------------------------")
         user = applicant_details()
@@ -768,4 +768,4 @@ def run_app():
             print("Application is closing...")
 
 
-run_app()
+run()
