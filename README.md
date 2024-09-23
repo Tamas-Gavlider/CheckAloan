@@ -1,11 +1,38 @@
 # CheckAloan
 
-Checkaloan is a Python terminal-based application that evaluates the loan eligibility of a user.<br> The app calculates a score and interest rate based on the user's input and provides a final decision on the loan approval.<br> The app runs on Heroku.
+Checkaloan is a Python terminal-based application that evaluates the loan eligibility of a user.<br>
+The name of the app rhymes with "Check Alone" because users typically check their loan eligibility on their own. That's why the app greets them with the message "Where you are not alone" to reassure them that CheckAloan is here to help. The app calculates a score and interest rate based on the user's input and provides a final decision on the loan approval.<br> The app runs on Heroku.
 
 [Here is the live version of my project](https://checkaloan-cdfe97fe02ce.herokuapp.com/)
 
 ![AmIResponsive](docs/screenshots/am-i-responsive.png)
-## How to use
+
+## Contents
+[How to Use](#how-to-use)
+[Features](#features)
+  - [Existing Features](#existing-features)
+  - [Future Features](#future-features)
+[Data Model](#data-model)
+  - [Excel](#excel)
+  - [Flowchart](#flowchart)
+  - [Data Handling](#data-handling)
+    - [Constant and global variables](#constant-and-global-variables)
+    - [Outside Functions](#outside-functions)
+    - [Applicant Class](#applicant-class)
+  - [Libraries](#libraries)
+[Testing](#testing)
+  - [Bugs](#bugs)
+  - [Remaining Bugs](#remaining-bugs)
+  - [Validator Testing](#validator-testing)
+  - [Unit Testing](#unit-testing)
+[Deployment](#deployment)
+  - [Local Development](#local-development)
+    - [How to Fork](#how-to-fork)
+    - [How to Clone](#how-to-clone)
+[Credits](#credits)
+  - [Acknowledgements](#acknowledgements)
+
+## How to Use
 
 - The user provides personal and financial details such as income, expenses, age, marital status, etc.
 - The app calculates the score and interest rate based on this information.
@@ -15,7 +42,7 @@ Checkaloan is a Python terminal-based application that evaluates the loan eligib
 
 ## Features
 
-### Existing features
+### Existing Features
 
  - Option to start the application form or quit the app.
  - Accepts user inputs.
@@ -67,11 +94,11 @@ The main features, scoring system, interest rate calculation, and criteria were 
 To help visualize the structure and logic of the code, I have created a flowchart that outlines the main components and their interactions.
 ![flowchart](docs/flowchart.png)
 
-### Data handling
+### Data Handling
 
 Data maintaned in class instances. Some functions are handled outside of the class for simplicity and testing purposes.<br> 
 
-#### Constant and global variables
+#### Constant and Global variables
 
 - **database** is an empty dictionary. Store the user details.
 - **MIN SCORE** 70 points that needs to be reached for approval.
@@ -79,7 +106,7 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 - **MAX LOAN DURATION** - Max loan repayment length in months.
 - **application ID** - will serve as the key in the database.
 
-#### Outside functions
+#### Outside Functions
 - **standard_style** add color and style. The color is set to green and style to bright for better visibility.
 - **wrong_input** will change the text color to red if the input is invalid or the application is rejected.
 - **welcome_message** will greet the user and, based on the input, either start the application or close it.
@@ -108,6 +135,8 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 ![Rejected](/docs/screenshots/rejected.png)
 - **add to database** - any applications get by the decision phase will be added to the database regardless the outcome. Beside the name and email address no other personal details will be stored. This function will increment the **application ID** by one to make sure the applications will not be replaced in the database.
 
+### Libraries
+
 The following libraries were used:
 - Colorama to add color to the text. The text is set to green by default. It changes to red for wrong input or if the application is rejected, and to blue if the user submits a duplicate request.
 - Tabulate to display the user details in a table.<br>
@@ -134,7 +163,7 @@ No bugs remaining.
      ![error](/docs/validation/pep8-error.png)
 
 
-### Unit testing
+### Unit Testing
 
 Unit testing returned no errors.
 
