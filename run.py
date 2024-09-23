@@ -64,13 +64,14 @@ def get_name():
         while True:
             name = input(standard_style() + "Please enter your full name:\n")
             # Check for digits in name
-            name_check = re.findall('\\d', name)
+            name_check = re.findall(r'[\d@,!?#£$%]', name)
             if name.strip() == "":
                 print(wrong_input() + "The name field cannot be empty.")
             elif len(name) < 6:
                 print(wrong_input() + "The name is too short.")
             elif name_check:
-                print(wrong_input() + "Name cannot contain numbers.")
+                print(wrong_input() + "Name cannot contain numbers or"
+                      " special characters.")
             else:
                 break  # Exit loop if name is valid
     except IndexError as e:
@@ -731,8 +732,8 @@ class Applicant:
             if applicant["Email"] == self.email.upper() and \
                applicant["Name"] == self.name.upper():
                 print(Fore.CYAN + Style.BRIGHT + "You have already applied"
-                      f" for a loan, and it was {applicant['Application']}.\n"
-                      , Fore.CYAN + Style.BRIGHT + f"{applicant}")
+                      f" for a loan, and it was {applicant['Application']}.\n",
+                      Fore.CYAN + Style.BRIGHT + f"{applicant}")
                 return True
 
         return False
@@ -768,4 +769,5 @@ def run():
             print("Application is closing...")
 
 
-run()
+if __name__ == '__main__':
+    run()

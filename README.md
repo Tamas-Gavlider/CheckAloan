@@ -8,11 +8,11 @@ The name of the app rhymes with "Check Alone" because users typically check thei
 ![AmIResponsive](docs/screenshots/am-i-responsive.png)
 
 ## Contents
-[How to Use](#how-to-use)
-[Features](#features)
+- [How to Use](#how-to-use)
+- [Features](#features)
   - [Existing Features](#existing-features)
   - [Future Features](#future-features)
-[Data Model](#data-model)
+- [Data Model](#data-model)
   - [Excel](#excel)
   - [Flowchart](#flowchart)
   - [Data Handling](#data-handling)
@@ -20,16 +20,16 @@ The name of the app rhymes with "Check Alone" because users typically check thei
     - [Outside Functions](#outside-functions)
     - [Applicant Class](#applicant-class)
   - [Libraries](#libraries)
-[Testing](#testing)
+- [Testing](#testing)
   - [Bugs](#bugs)
   - [Remaining Bugs](#remaining-bugs)
   - [Validator Testing](#validator-testing)
   - [Unit Testing](#unit-testing)
-[Deployment](#deployment)
+- [Deployment](#deployment)
   - [Local Development](#local-development)
     - [How to Fork](#how-to-fork)
     - [How to Clone](#how-to-clone)
-[Credits](#credits)
+- [Credits](#credits)
   - [Acknowledgements](#acknowledgements)
 
 ## How to Use
@@ -67,7 +67,7 @@ The name of the app rhymes with "Check Alone" because users typically check thei
         - Age over 65<br>![Age-over-65](/docs/screenshots/age-over-65.png)
         - Age between 18 - 65<br>![Age-valid](/docs/gif/age-validation-valid-age.gif)
     - If the user is unemployed the application will be cancelled,
-    <br>and the user will be taken back to the welcome page.
+    <br>and the user will be taken back to the welcome page.<br>
     ![Employment](/docs/gif/employment-validation-unemployed.gif)
     - The loan amount cannot exceed 20,000. If a higher amount is entered, the user will be notified<br> and can choose to proceed with the maximum amount or cancel the application.<br>
     ![Loan amount](/docs/gif/loan-amount-validation.gif)
@@ -100,7 +100,7 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 
 #### Constant and Global variables
 
-- **database** is an empty dictionary. Store the user details.
+- **database** is an empty dictionary to store the user details.
 - **MIN SCORE** 70 points that needs to be reached for approval.
 - **MAX LOAN** the maximum loan amount of 20 000.
 - **MAX LOAN DURATION** - Max loan repayment length in months.
@@ -130,7 +130,7 @@ Data maintaned in class instances. Some functions are handled outside of the cla
 ![Duplicate](/docs/screenshots/duplicate-message.png)
 - **calculate functions** - once the details are confirmed , for each detail the score and interest rate will be calculated. 
 - **status function** - will return either "APPROVED" or "REJECTED".
-- **decision function** - will return the loan details and monthly payment with interest rate for the approved application or the rejection message with the score. 
+- **decision function** - will return the loan details and monthly payment with interest rate for the approved application or the rejection message with the score.<br>
 ![Approved](/docs/screenshots/decision.png)<br>
 ![Rejected](/docs/screenshots/rejected.png)
 - **add to database** - any applications get by the decision phase will be added to the database regardless the outcome. Beside the name and email address no other personal details will be stored. This function will increment the **application ID** by one to make sure the applications will not be replaced in the database.
@@ -141,7 +141,7 @@ The following libraries were used:
 - Colorama to add color to the text. The text is set to green by default. It changes to red for wrong input or if the application is rejected, and to blue if the user submits a duplicate request.
 - Tabulate to display the user details in a table.<br>
 ![Summary](/docs/screenshots/summary-ss.png)
-- RegEx used for phone and email validation
+- RegEx used for name, phone and email validation
 
 ## Testing
 
@@ -158,9 +158,7 @@ No bugs remaining.
 - PEP8 
     - No errors were returned from [PEP8](https://pep8ci.herokuapp.com/)
      Unit test<br>![Pep8unittest](/docs/validation/unittest-pep8.png)<br>
-     Run file<br>![Run.py](/docs/validation/run-file-validation.png)<br>
-     It returned a whitespace before "," in line 734, however there is none.<br>
-     ![error](/docs/validation/pep8-error.png)
+     Run file<br>![Run.py](/docs/validation/run-file-pep8.png)<br>
 
 
 ### Unit Testing
@@ -213,6 +211,9 @@ These resources provided valuable insights into testing input handling and mocki
 For email validation, I referenced the following resource to implement more complex checks beyond just "@" and ".":
 - [Javatpoint](https://www.javatpoint.com/how-to-validated-email-address-in-python-with-regular-expression.)
 This resource helped in applying regular expressions for robust email validation.
+
+For name and phone validation, I referenced to the following resource:
+- [W3chools](https://www.w3schools.com/python/python_regex.asp#gsc.tab=0)
 
 ### Acknowledgements
 

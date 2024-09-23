@@ -11,36 +11,37 @@ class Test(unittest.TestCase):
     Testing the get functions
     """
     # Test for name
-    @patch("builtins.input", return_value="Tamas")
+    @patch("builtins.input", return_value="Tamas G")
     def test_get_name(self, mock_input):
         name = get_name()
-        self.assertEqual(name, "Tamas")
+        self.assertEqual(name, "Tamas G")
 
     # Test for the length of the name
-    @patch("builtins.input", side_effect=["four", "Tamas"])
+    @patch("builtins.input", side_effect=["four", "Tamas G"])
     @patch("sys.stdout", new_callable=StringIO)
     def test_get_name_short_input(self, mock_stdout, mock_input):
         name = get_name()
         output = mock_stdout.getvalue()
-        self.assertEqual(name, "Tamas")
+        self.assertEqual(name, "Tamas G")
         self.assertIn("The name is too short.", output)
 
     # Test if the name contains numbers
-    @patch("builtins.input", side_effect=["12345", "Tamas"])
+    @patch("builtins.input", side_effect=["1234335", "Tamas G"])
     @patch("sys.stdout", new_callable=StringIO)
     def test_get_name_num_input(self, mock_stdout, mock_input):
         name = get_name()
         output = mock_stdout.getvalue()
-        self.assertEqual(name, "Tamas")
-        self.assertIn("Name cannot contain numbers.", output)
+        self.assertEqual(name, "Tamas G")
+        self.assertIn("Name cannot contain numbers or"
+                      " special characters.", output)
 
     # Test if no data entered
-    @patch("builtins.input", side_effect=["", " ", "Tamas"])
+    @patch("builtins.input", side_effect=["", " ", "Tamas G"])
     @patch("sys.stdout", new_callable=StringIO)
     def test_get_name_no_input(self, mock_stdout, mock_input):
         name = get_name()
         output = mock_stdout.getvalue()
-        self.assertEqual(name, "Tamas")
+        self.assertEqual(name, "Tamas G")
         self.assertIn("The name field cannot be empty.", output)
 
     # Test for email
@@ -73,7 +74,7 @@ class Test(unittest.TestCase):
         phone = get_phone()
         output = mock_stdout.getvalue()
         self.assertEqual(phone, "1234567890")
-        self.assertIn("Please enter a valid phone number:", output)
+        self.assertIn("Please enter a valid phone number.", output)
 
     # Test for age
     @patch("builtins.input", return_value=30)
