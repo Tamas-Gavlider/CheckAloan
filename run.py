@@ -605,7 +605,7 @@ class Applicant:
         Calculate score/interest based on the income,expense considering
         the monthly payment for the request loan
         """
-        if self.expenses > self.income:
+        if self.expenses >= self.income:
             self.score -= 100
         elif self.income > self.expenses:
             if self.income - self.expenses > self.monthly_payment*2:
