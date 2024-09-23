@@ -126,7 +126,7 @@ Data maintaned in class instances. Some functions are handled outside of the cla
   ![Change loan](/docs/gif/change-loan.gif)
 - **make changes** - user will need to press n to make changes or press enter to submit the form. Validation done to make sure that other input will not be accepted.<br>
 ![Make changes](/docs/gif/make-changes.gif)
-- **check duplicates** - will check if the user had any prior application with us. It will search for the user name and email address. Function will return the previous application status with the loan details if duplicate found. Otherwise it will calculate the score and interest rate.
+- **check duplicates** - will check if the user had any prior application with us. It will search for the email address. Function will return the previous application status with the loan details if duplicate found. Otherwise it will calculate the score and interest rate.
 ![Duplicate](/docs/screenshots/duplicate-message.png)
 - **calculate functions** - once the details are confirmed , for each detail the score and interest rate will be calculated. 
 - **status function** - will return either "APPROVED" or "REJECTED".

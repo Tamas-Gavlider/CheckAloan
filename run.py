@@ -729,8 +729,7 @@ class Applicant:
     def check_duplicates(self):
         global database
         for applicant_id, applicant in database.items():
-            if applicant["Email"] == self.email.upper() and \
-               applicant["Name"] == self.name.upper():
+            if applicant["Email"] == self.email.upper():
                 print(Fore.CYAN + Style.BRIGHT + "You have already applied"
                       f" for a loan, and it was {applicant['Application']}.\n",
                       Fore.CYAN + Style.BRIGHT + f"{applicant}")
