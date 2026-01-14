@@ -3,7 +3,7 @@
 Checkaloan is a Python terminal-based application that evaluates the loan eligibility of a user.<br>
 The name of the app rhymes with "Check Alone" because users typically check their loan eligibility on their own. That's why the app greets them with the message "Where you are not alone" to reassure them that CheckAloan is here to help. The app calculates a score and interest rate based on the user's input and provides a final decision on the loan approval.<br> The app runs on Heroku.
 
-[Here is the live version of my project](https://checkaloan-cdfe97fe02ce.herokuapp.com/)
+There is no live version at the moment; the app can be tested on the host server.
 
 ![AmIResponsive](docs/screenshots/am-i-responsive.png)
 
